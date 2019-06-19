@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="icons/|icons/" kind="src" path="src"/>
+	<classpathentry excluding="src/|libs/" kind="src" path=""/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/lyt-/Desktop/TimePF_OL/jar/beautyeye_lnf.jar"/>
+	<classpathentry kind="lib" path="C:/Users/lyt-/Desktop/TimePF_OL/jar/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/lyt-/Desktop/TimePF_OL/jar/icu4j-4.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/lyt-/Desktop/TimePF_OL/jar/jena-2.5.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/lyt-/Desktop/TimePF_OL/jar/jena-iri-0.9.0-incubating.jar"/>
+	<classpathentry kind="lib" path="C:/Users/lyt-/Desktop/TimePF_OL/jar/org.apache.servicemix.bundles.concurrent-1.3.2_1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/lyt-/Desktop/TimePF_OL/jar/swt.jar"/>
+	<classpathentry kind="lib" path="C:/Users/lyt-/Desktop/TimePF_OL/jar/swt-debug.jar"/>
+	<classpathentry kind="lib" path="C:/Users/lyt-/Desktop/TimePF_OL/jar/xercesImpl.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

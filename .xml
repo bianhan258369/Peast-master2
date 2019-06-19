@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Diagram>
+  <Title>ProblemDiagram</Title>
+  <Machine machine_name="BianHan" machine_shortname="bh" machine_cxb="&#0;" machine_state="2" machine_locality="163,131,74,40"/>
+  <Requirement requirement_NO="0" requirement_text="?Requirement" requirement_biaohao="1" requirement_locality="506,125,40,50"/>
+  <Interface line1_description="a:?Interface" line1_locality="237,151,332,58" line1_tofrom="b,bh"/>
+  <Interface line1_description="b:?Interface" line1_locality="237,151,335,244" line1_tofrom="h,bh"/>
+  <Constraint line2_description="c:?ReqRef" line2_locality="506,150,385,58" line2_tofrom="b,?Requirement"/>
+  <Constraint line2_description="d:?ReqRef" line2_locality="506,150,381,244" line2_tofrom="h,?Requirement"/>
+</Diagram>

@@ -1,0 +1,281 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns="http://www.owl-ontologies.com/Ontology1206426899.owl#"
+  xml:base="http://www.owl-ontologies.com/Ontology1206426899.owl">
+  <owl:Ontology rdf:about=""/>
+  <owl:Class rdf:ID="CasualPhenomena">
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="Phenomena"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="Problem"/>
+  <owl:Class rdf:ID="Transition">
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="BasicTerm"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="ContextDiagram">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="hasMachine"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="ProblemModel"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="hasProDom"/>
+        </owl:onProperty>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:minCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="hasInterface"/>
+        </owl:onProperty>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:minCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="ProblemDiagram">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="hasReq"/>
+        </owl:onProperty>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:minCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="#ProblemModel"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:minCardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasInterface"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:minCardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasMachine"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasProDom"/>
+        </owl:onProperty>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:minCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Restriction>
+            <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+            >1</owl:minCardinality>
+            <owl:onProperty>
+              <owl:ObjectProperty rdf:ID="hasReqCon"/>
+            </owl:onProperty>
+          </owl:Restriction>
+          <owl:Restriction>
+            <owl:onProperty>
+              <owl:ObjectProperty rdf:ID="hasReqRef"/>
+            </owl:onProperty>
+            <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+            >1</owl:minCardinality>
+          </owl:Restriction>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="Requirement">
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="Domain"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#Phenomena">
+    <rdfs:subClassOf rdf:resource="#BasicTerm"/>
+  </owl:Class>
+  <owl:Class rdf:ID="GivenDomain">
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="ProblemDomain"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="DesignedDomain">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#ProblemDomain"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="Interaction"/>
+  <owl:Class rdf:ID="AtomicProblem">
+    <rdfs:subClassOf rdf:resource="#Problem"/>
+  </owl:Class>
+  <owl:Class rdf:ID="Interface">
+    <rdfs:subClassOf rdf:resource="#Interaction"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="fromDom"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="toDom"/>
+        </owl:onProperty>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="RequirementReference">
+    <rdfs:subClassOf rdf:resource="#Interaction"/>
+  </owl:Class>
+  <owl:Class rdf:ID="RequirementConstraint">
+    <rdfs:subClassOf rdf:resource="#Interaction"/>
+  </owl:Class>
+  <owl:Class rdf:ID="CompositeProblem">
+    <rdfs:subClassOf rdf:resource="#Problem"/>
+  </owl:Class>
+  <owl:Class rdf:ID="Value">
+    <rdfs:subClassOf rdf:resource="#BasicTerm"/>
+  </owl:Class>
+  <owl:Class rdf:about="#ProblemDomain">
+    <owl:disjointWith rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    ></owl:disjointWith>
+    <rdfs:subClassOf rdf:resource="#Domain"/>
+  </owl:Class>
+  <owl:Class rdf:ID="SignalPhenomena">
+    <rdfs:subClassOf rdf:resource="#Phenomena"/>
+  </owl:Class>
+  <owl:Class rdf:ID="StateTransitionDiagram">
+    <rdfs:subClassOf rdf:resource="#BasicTerm"/>
+  </owl:Class>
+  <owl:Class rdf:ID="State">
+    <rdfs:subClassOf rdf:resource="#BasicTerm"/>
+  </owl:Class>
+  <owl:Class rdf:ID="Event">
+    <rdfs:subClassOf rdf:resource="#BasicTerm"/>
+  </owl:Class>
+  <owl:Class rdf:ID="Machine">
+    <rdfs:subClassOf rdf:resource="#Domain"/>
+  </owl:Class>
+  <owl:Class rdf:ID="DomainType">
+    <rdfs:subClassOf rdf:resource="#BasicTerm"/>
+  </owl:Class>
+  <owl:ObjectProperty rdf:about="#hasReqCon">
+    <rdfs:domain rdf:resource="#ProblemDiagram"/>
+    <rdfs:range rdf:resource="#RequirementConstraint"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#hasMachine">
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#ContextDiagram"/>
+          <owl:Class rdf:about="#ProblemDiagram"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:range rdf:resource="#Machine"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#hasReqRef">
+    <rdfs:domain rdf:resource="#ProblemDiagram"/>
+    <rdfs:range rdf:resource="#RequirementReference"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#hasProDom">
+    <rdfs:range>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#DesignedDomain"/>
+          <owl:Class rdf:about="#GivenDomain"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:range>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#ContextDiagram"/>
+          <owl:Class rdf:about="#ProblemDiagram"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#hasReq">
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#ProblemDiagram"/>
+          <owl:Class rdf:about="#ContextDiagram"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:range rdf:resource="#Requirement"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#fromDom">
+    <rdfs:domain rdf:resource="#Interface"/>
+    <rdfs:range>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#GivenDomain"/>
+          <owl:Class rdf:about="#DesignedDomain"/>
+          <owl:Class rdf:about="#Machine"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:range>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#toDom">
+    <rdfs:domain rdf:resource="#Interface"/>
+    <rdfs:range>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#Machine"/>
+          <owl:Class rdf:about="#GivenDomain"/>
+          <owl:Class rdf:about="#DesignedDomain"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:range>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#hasInterface">
+    <rdfs:range rdf:resource="#Interface"/>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#ContextDiagram"/>
+          <owl:Class rdf:about="#ProblemDiagram"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+  </owl:ObjectProperty>
+  <GivenDomain rdf:ID="rd1">
+    <owl:differentFrom>
+      <GivenDomain rdf:ID="d2"/>
+    </owl:differentFrom>
+  </GivenDomain>
+  <Interface rdf:ID="i1"/>
+</rdf:RDF>
+
+<!-- Created with Protege (with OWL Plugin 3.3.1, Build 430)  http://protege.stanford.edu -->
