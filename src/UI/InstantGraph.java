@@ -20,19 +20,19 @@ public class InstantGraph implements Serializable {
 	private String name = "";
 
 	private IntDiagram intDiagram = null;
-	private LinkedList<Phenomenon> phenomenons = new LinkedList<Phenomenon>();// ´æ·ÅÓë¸ÃÎÊÌâÓòÓĞ¹ØµÄÏÖÏó
-	private LinkedList<String> constraint = new LinkedList<String>();// ´æ·Å´ËÊ±ÖÓÍ¼µÄÔ¼ÊøÓï¾ä
-	private LinkedList<Jiaohu> jiaohu = new LinkedList<Jiaohu>(); // ±£´æ½»»¥
-	private Hashtable<Integer, String> weight = new Hashtable<Integer, String>();//±£´æ½»»¥µÄË³Ğò
+	private LinkedList<Phenomenon> phenomenons = new LinkedList<Phenomenon>();// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¹Øµï¿½ï¿½ï¿½ï¿½ï¿½
+	private LinkedList<String> constraint = new LinkedList<String>();// ï¿½ï¿½Å´ï¿½Ê±ï¿½ï¿½Í¼ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½
+	private LinkedList<Jiaohu> jiaohu = new LinkedList<Jiaohu>(); // ï¿½ï¿½ï¿½æ½»ï¿½ï¿½
+	private Hashtable<Integer, String> weight = new Hashtable<Integer, String>();//ï¿½ï¿½ï¿½æ½»ï¿½ï¿½ï¿½ï¿½Ë³ï¿½ï¿½
 
-	private Rect domain;// Òª»æÖÆÊ±ÖÓÍ¼µÄÎÊÌâÓò
+	private Rect domain;// Òªï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	private Clock clock;
-	private Diagram problemDiagram;// ÎÊÌâÍ¼
+	private Diagram problemDiagram;// ï¿½ï¿½ï¿½ï¿½Í¼
 
-	int originX;// ×ø±êÖáÔ­µãX×ø±ê
-	int originY;// ×ø±êÖáÔ­µãY×ø±ê
+	int originX;// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½
+	int originY;// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½Yï¿½ï¿½ï¿½ï¿½
 
-	int length;// ×ø±êÖá³¤¶È
+	int length;// ï¿½ï¿½ï¿½ï¿½ï¿½á³¤ï¿½ï¿½
 
 	public InstantGraph(Rect domain, Clock clock) {
 
@@ -52,7 +52,6 @@ public class InstantGraph implements Serializable {
 
 		this.setName(domain.getShortName());
 
-		// É¸Ñ¡³öËùÓĞÓë¸ÃÎÊÌâÓòÏà¹ØµÄÏÖÏó
 		for (int i = 0; i <= temp.size() - 1; i++) {
 			state = 0;
 			Phenomenon temp_p = (Phenomenon) temp.get(i);
@@ -108,7 +107,7 @@ public class InstantGraph implements Serializable {
 
 		this.setName(domain.getShortName());
 
-		// É¸Ñ¡³öËùÓĞÓë¸ÃÎÊÌâÓòÏà¹ØµÄÏÖÏó
+		// É¸Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½
 		for (int i = 0; i <= temp.size() - 1; i++) {
 			state = 0;
 			Phenomenon temp_p = (Phenomenon) temp.get(i);
@@ -223,8 +222,8 @@ public class InstantGraph implements Serializable {
 	}
 
 	public void setPosition(int x, int y) {
-		this.originX = x;// ×ø±êÖáÔ­µãX×ø±ê
-		this.originY = y;// ×ø±êÖáÔ­µãY×ø±ê
+		this.originX = x;// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½
+		this.originY = y;// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½Yï¿½ï¿½ï¿½ï¿½
 		for (int i = 0; i < jiaohu.size(); i++) {
 			Jiaohu temp = jiaohu.get(i);
 			jiaohu.get(i).moveTo(0, originY - temp.getMiddleY());
@@ -287,7 +286,7 @@ public class InstantGraph implements Serializable {
 	}
 
 	public void draw(Graphics g) {
-		// »­Í¼µÄ±êÊ¶
+		// ï¿½ï¿½Í¼ï¿½Ä±ï¿½Ê¶
 		g.drawString("C", originX - 5, originY - 10);
 		Font font1 = new Font("SansSerif", 0, 9);
 		Font tmp = g.getFont();
@@ -298,17 +297,17 @@ public class InstantGraph implements Serializable {
 		g.fillPolygon(new int[] { originX + length, originX + length - 10,
 				originX + length - 10 }, new int[] { originY - 10,
 				originY - 15, originY - 5 }, 3);
-		// »­½»»¥
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		for (int i = 0; i < jiaohu.size(); i++) {
 			Jiaohu jh = (Jiaohu) this.jiaohu.get(i);
 			jh.draw(g);
 		}
-		// »­µ¥Î»
+		// ï¿½ï¿½ï¿½ï¿½Î»
 		g.drawString(clock.getUnit(), originX + length, originY + 5);
 	}
 
 	public void draw(Graphics g, boolean inClockSpecification) {
-		// »­Í¼µÄ±êÊ¶
+		// ï¿½ï¿½Í¼ï¿½Ä±ï¿½Ê¶
 		if(inClockSpecification){
 			g.drawString("C", originX - 5, originY + 90);
 			Font font1 = new Font("SansSerif", 0, 9);
@@ -320,13 +319,13 @@ public class InstantGraph implements Serializable {
 			g.fillPolygon(new int[] { originX + length, originX + length - 10,
 					originX + length - 10 }, new int[] { originY + 90,
 					originY + 85, originY + 95 }, 3);
-			// »­½»»¥
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			for (int i = 0; i < jiaohu.size(); i++) {
 				Jiaohu jh = (Jiaohu) this.jiaohu.get(i);
 				jh.setSize(jh.getMiddleX(), jh.getMiddleY() + 100);
 				jh.draw(g);
 			}
-			// »­µ¥Î»
+			// ï¿½ï¿½ï¿½ï¿½Î»
 			g.drawString(clock.getUnit(), originX + length, originY + 105);
 		}
 
@@ -343,7 +342,7 @@ public class InstantGraph implements Serializable {
 	}
 
 	/**
-	 * µÃµ½¸Ã½»»¥Í¼ÖĞËùÓĞstateÎª0»òÕß1µÄ³¡¾° µ÷ÓÃimproveº¯Êı¶ÔÕâĞ©³¡¾°½øĞĞÅÅĞò
+	 * ï¿½Ãµï¿½ï¿½Ã½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½stateÎª0ï¿½ï¿½ï¿½ï¿½1ï¿½Ä³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½improveï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ©ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * */
 	private void setOrder() {
 		IntDiagram myIntDiagram = whichDiagram();
@@ -457,14 +456,14 @@ public class InstantGraph implements Serializable {
 	}
 
 	/**
-	 * ²ÎÊı£º³¡¾°Á´±í ·µ»ØÖµ£º¹²°üº¬µÄ²»ÖØ¸´µÄ½»»¥
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä²ï¿½ï¿½Ø¸ï¿½ï¿½Ä½ï¿½ï¿½ï¿½
 	 * */
 	private int getCount(LinkedList<Changjing> newChangjing) {
 
 		LinkedList<Jiaohu> jiaohu = new LinkedList<Jiaohu>();
 
 		/*
-		 * Õâ¸öº¯Êı¿ÉÒÔ¸ÄÎª¼¯ºÏ Set<Jiaohu> jiaohus=new HashSet();
+		 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¸ï¿½Îªï¿½ï¿½ï¿½ï¿½ Set<Jiaohu> jiaohus=new HashSet();
 		 */
 
 		int newChangjing_size = newChangjing.size();
@@ -485,7 +484,7 @@ public class InstantGraph implements Serializable {
 	}
 
 	/**
-	 * µÃµ½Óë¸ÃÎÊÌâÓòÏà¹ØµÄÇé¾³Í¼
+	 * ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½ï¿½é¾³Í¼
 	 * */
 	private IntDiagram whichDiagram() {
 

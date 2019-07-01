@@ -25,7 +25,7 @@ public class DrawPane extends JPanel implements ActionListener {
 	JButton jb1 = new JButton();
 	public int i = 0;
 	Ontology_c ont;
-	JLabel[] jLabel = new JLabel[16];
+	JLabel[] jLabel = new JLabel[4];
 
 	public static void main(String[] args) {
 	}
@@ -61,10 +61,10 @@ public class DrawPane extends JPanel implements ActionListener {
 	public DrawPane() {
 		setLayout(null);
 
-		int x = 0;
-		int y = 0;
-		int chang = 0;
-		int kuan = 0;
+		int x = 10;
+		int y = 10;
+		int chang = 250;
+		int kuan = 20;
 		for (int i = 0; i < this.jLabel.length; i++) {
 			this.jLabel[i] = new JLabel();
 			add(this.jLabel[i]);
@@ -73,28 +73,20 @@ public class DrawPane extends JPanel implements ActionListener {
 					.setBounds(new Rectangle(x, y + i * kuan, chang, kuan));
 			add(this.jLabel[i]);
 		}
-		this.jb1.setBounds(new Rectangle(0, 0, 0, 0));
-		//this.jb1.setBounds(new Rectangle(20, y + this.jLabel.length * kuan, 81, 25));
-		this.jb1.setText("Execute");
+		this.jb1.setBounds(new Rectangle(20, y + this.jLabel.length * kuan, 81,
+				25));
+		this.jb1.setText("next");
 		add(this.jb1);
 		this.jb1.setEnabled(false);
 		this.jb1.addActionListener(this);
-		this.jLabel[0].setText("Step 1:Draw the context diagram");
-		this.jLabel[1].setText("   1,Designate machine");
-		this.jLabel[2].setText("   2,Identify domains");
-		this.jLabel[3].setText("   3,Identify interactions");
-		this.jLabel[4].setText("   4,Check context diagram");
-		this.jLabel[5].setText("Step 2:Draw the problem diagram");
-		this.jLabel[6].setText("   1,Identify requirements");
-		this.jLabel[7].setText("   2,Identify references");
-		this.jLabel[8].setText("   3,Check problem diagram");
-		this.jLabel[9].setText("Step 3:Construct the scenario graphs");
-		this.jLabel[10].setText("   1,Draw scenario graph");
-		this.jLabel[11].setText("   2,Check scenario graph");
-		this.jLabel[12].setText("Step 4:Perform the problem projection");
-		this.jLabel[13].setText("   1,Check well-formed scenario");
-		this.jLabel[14].setText("   2,Perform projection");
-		this.jLabel[15].setText("Finish");
+		this.jLabel[0].setText("1.read project file");
+		this.jLabel[1].setText("2.read ontology file");
+		this.jLabel[2].setText("3.manually add constrains");
+		this.jLabel[3].setText("Finish");
+	}
+
+	public int getI(){
+		return i;
 	}
 
 	private void setallnon() {
@@ -104,7 +96,6 @@ public class DrawPane extends JPanel implements ActionListener {
 
 	public void setState(int i) {
 		this.i = i;
-		setLabel();
 		Main.win.setButtonState(i);
 	}
 
@@ -119,55 +110,6 @@ public class DrawPane extends JPanel implements ActionListener {
 			this.jLabel[0].setEnabled(true);
 			this.jLabel[2].setEnabled(true);
 		}
-		if (this.i == 2) {
-			setallnon();
-			this.jLabel[0].setEnabled(true);
-			this.jLabel[3].setEnabled(true);
-		}
-		if (this.i == 3) {
-			setallnon();
-			this.jLabel[0].setEnabled(true);
-			this.jLabel[4].setEnabled(true);
-		}
-		if (this.i == 4) {
-			setallnon();
-			this.jLabel[5].setEnabled(true);
-			this.jLabel[6].setEnabled(true);
-		}
-		if (this.i == 5) {
-			setallnon();
-			this.jLabel[5].setEnabled(true);
-			this.jLabel[7].setEnabled(true);
-		}
-		if (this.i == 6) {
-			setallnon();
-			this.jLabel[5].setEnabled(true);
-			this.jLabel[8].setEnabled(true);
-		}
-		if (this.i == 7) {
-			setallnon();
-			this.jLabel[9].setEnabled(true);
-			this.jLabel[10].setEnabled(true);
-		}
-		if (this.i == 8) {
-			setallnon();
-			this.jLabel[9].setEnabled(true);
-			this.jLabel[11].setEnabled(true);
-		}
-		if (this.i == 9) {
-			setallnon();
-			this.jLabel[12].setEnabled(true);
-			this.jLabel[13].setEnabled(true);
-		}
-		if (this.i == 10) {
-			setallnon();
-			this.jLabel[12].setEnabled(true);
-			this.jLabel[14].setEnabled(true);
-		}
-		if (this.i == 11) {
-			setallnon();
-			this.jLabel[15].setEnabled(true);
-		}
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -175,19 +117,26 @@ public class DrawPane extends JPanel implements ActionListener {
 			Object[] bs = { "Yes", "No" };
 
 			int k = JOptionPane.showOptionDialog(Main.win,
-					"Have you finished designate machine?", "Tip", 2, 3, null,
+					"Have you finished loading project xml file?", "Tip", 2, 3, null,
 					bs, null);
 
 			if (k == 0) {
-				setState(1);
+				if(Main.win.myProblemDiagram != null && Main.win.instantPanes.size() != 0){
+					setState(1);
+					return;
+				}
+				else {
+					JOptionPane.showMessageDialog(Main.win, "load error!","ERROR",JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 			}
-			return;
 		}
+
 		if (this.i == 1) {
 			Object[] bs = { "Yes", "No" };
 
 			int k = JOptionPane.showOptionDialog(Main.win,
-					"Have you finished identifying domains?", "Tip", 2, 3,
+					"Have you finished loading ontologty file?", "Tip", 2, 3,
 					null, bs, null);
 
 			if (k == 0) {
@@ -195,18 +144,30 @@ public class DrawPane extends JPanel implements ActionListener {
 			}
 			return;
 		}
-		if (this.i == 2) {
+
+		if (this.i == 2){
 			Object[] bs = { "Yes", "No" };
 
 			int k = JOptionPane.showOptionDialog(Main.win,
-					"Have you finished identifying interactions?", "Tip", 2, 3,
+					"Have you finished adding constrains?", "Tip", 2, 3,
 					null, bs, null);
 
 			if (k == 0) {
 				setState(3);
+				JOptionPane.showMessageDialog(Main.win, "Finished!");
 			}
 			return;
 		}
+
+		if (this.i == 3) {
+			this.jLabel[0].setEnabled(false);
+			this.jLabel[1].setEnabled(false);
+			this.jLabel[2].setEnabled(false);
+			this.jLabel[3].setEnabled(false);
+			this.jb1.setEnabled(false);
+			return;
+		}
+		/*
 		if (this.i == 3) {
 			//if (checkContextDiagram()) {  ////////////////////////////
 			if (checkContextDiagram()) {
@@ -260,7 +221,7 @@ public class DrawPane extends JPanel implements ActionListener {
 		}
 		if (this.i == 6) {
 			//if (checkProblemDiagram()) {                 //////////////////////////////
-			if (checkProblemDiagram()) {//////////////////////////////////// 
+			if (checkProblemDiagram()) {////////////////////////////////////
 				Object[] bs = { "OK" };
 
 				int k = JOptionPane.showOptionDialog(Main.win,
@@ -329,7 +290,7 @@ public class DrawPane extends JPanel implements ActionListener {
 			setState(7);
 			return;
 		}
-
+		*/
 	}
 
 	private void stragety2() {

@@ -25,19 +25,14 @@ import util.TxtFileFilter;
 public class InstantPane extends FatherPane implements MouseMotionListener,
 		MouseListener, ActionListener {
 
-	private static String path = "D:/";
-	private static String filenameTemp;
-
-	// int state=9797;
-	// InstantGraph ig;
 	LinkedList<InstantGraph> igs = new LinkedList<InstantGraph>();
 	Map<String, Integer> constraintRelations = new HashMap<String, Integer>();
 	// LinkedList<InstantGraph> comIgs=new LinkedList<InstantGraph>();
 	ConstraintDialog constraintDialog;
 	static Diagram myProblemDiagram;
-	boolean dragged = false;// ÍÏ×§±Ø±¸£¬±êÊ¶ÍÏ×§×´Ì¬Á¿
-	Jiaohu nowSelected = null;// µ±Ç°Ñ¡ÔñµÄ½»»¥
-
+	boolean dragged = false;// ï¿½ï¿½×§ï¿½Ø±ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½×§×´Ì¬ï¿½ï¿½
+	Jiaohu nowSelected = null;// ï¿½ï¿½Ç°Ñ¡ï¿½ï¿½Ä½ï¿½ï¿½ï¿½
+	String title = "TD";
 	Jiaohu from = null;
 	Jiaohu to = null;
 	int relation = 0;
@@ -48,14 +43,14 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 	LinkedList<Pair<String, List<Integer>>> params = new LinkedList<>();
 	LinkedList<Jiaohu> froms = new LinkedList<>();
 	LinkedList<Jiaohu> tos = new LinkedList<>();
-	// µ±Ç°Êó±êµÄÎ»ÖÃ
+	// ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
 	int nowx = 0;
 	int nowy = 0;
-	// ÍÏ×§Ç°Î»ÖÃ
+	// ï¿½ï¿½×§Ç°Î»ï¿½ï¿½
 	int previousX = 0;
 	int previousY = 0;
 
-	private int count = 1;// Í¼µÄÊýÄ¿
+	private int count = 1;// Í¼ï¿½ï¿½ï¿½ï¿½Ä¿
 
 	JPopupMenu popupMenu = new JPopupMenu();
 
@@ -99,6 +94,9 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 		createTxtBut.addActionListener(this);
 		addMouseListener(this);
 		addMouseMotionListener(this);
+		addBut.setEnabled(false);
+		combineBut.setEnabled(false);
+		createTxtBut.setEnabled(false);
 	}
 
 	/*
@@ -153,8 +151,8 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 		 * .equals(newIg.getClock().getName())) index = i + 1; }
 		 */
 		newIg.setPosition(20, count * 60 + 60);/*
-												 * ¶¨Î»Ã¿¸öÍ¼µÄ×ø±ê£»i*60+60£»
-												 * µÚÒ»¸ö60ÊÇÁ½Í¼¼ä¾à£¬µÚ¶þ¸ö60ÊÇµÚÒ»¸öÍ¼µÄY×ø±ê
+												 * ï¿½ï¿½Î»Ã¿ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ê£»i*60+60ï¿½ï¿½
+												 * ï¿½ï¿½Ò»ï¿½ï¿½60ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½à£¬ï¿½Ú¶ï¿½ï¿½ï¿½60ï¿½Çµï¿½Ò»ï¿½ï¿½Í¼ï¿½ï¿½Yï¿½ï¿½ï¿½ï¿½
 												 */
 		igs.add(newIg);
 		count++;
@@ -477,7 +475,7 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 				if (this.relation == 0)
 					con = "=";
 				else if (this.relation == 1)
-					con = "¡Ü";
+					con = "ï¿½ï¿½";
 
 				/*
 				 * if(this.from || tmpTo belongs to construction Graph){
@@ -596,7 +594,7 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 		}
 		int x = e.getX();
 		int y = e.getY();
-		this.nowSelected.moveTo(x - this.nowx, 0);// µÚ¶þ¸ö²ÎÊýÉèÖÃÎª0±£Ö¤ÆäÖ»ÔÚ×ø±êÖáÉÏÒÆ¶¯
+		this.nowSelected.moveTo(x - this.nowx, 0);// ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îª0ï¿½ï¿½Ö¤ï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½
 		this.nowx = x;
 		this.nowy = y;
 
@@ -722,7 +720,7 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 		int igs_size = this.igs.size();
 		int state = 0;
 
-		if (con.equals("¡Ü")) {
+		if (con.equals("ï¿½ï¿½")) {
 			state = 1;
 		} else if (con.equals("<") || con.equals("=")) {
 			state = 2;
@@ -809,7 +807,7 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 		FileOutputStream fos = null;
 		PrintWriter pw = null;
 		try {
-			// ½«ÎÄ¼þ¶ÁÈëÊäÈëÁ÷
+			// ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			fis = new FileInputStream(file);
 			isr = new InputStreamReader(fis);
 			br = new BufferedReader(isr);
@@ -873,11 +871,11 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 			//buf.append(filein);
 
 			/*
-			// ±£´æ¸ÃÎÄ¼þÔ­ÓÐµÄÄÚÈÝ
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½Ô­ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½
 			for (int j = 1; (temp = br.readLine()) != null; j++) {
 				buf = buf.append(temp);
 				// System.getProperty("line.separator")
-				// ÐÐÓëÐÐÖ®¼äµÄ·Ö¸ô·û Ïàµ±ÓÚ¡°\n¡±
+				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½Ä·Ö¸ï¿½ï¿½ï¿½ ï¿½àµ±ï¿½Ú¡ï¿½\nï¿½ï¿½
 				buf = buf.append(System.getProperty("line.separator"));
 			}
 			buf.append(filein);
@@ -888,7 +886,7 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 			pw.write(buf.toString().toCharArray());
 			pw.flush();
 		} catch (IOException e1) {
-			// TODO ×Ô¶¯Éú³É catch ¿é
+			// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ catch ï¿½ï¿½
 			e1.printStackTrace();
 		} finally {
 			if (pw != null) {
@@ -908,5 +906,13 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 			}
 			JOptionPane.showMessageDialog(null,"success!","success",JOptionPane.INFORMATION_MESSAGE);
 		}
+	}
+
+	public void setTitle(String title){
+		this.title = title;
+	}
+
+	public String getTitle() {
+		return title;
 	}
 }

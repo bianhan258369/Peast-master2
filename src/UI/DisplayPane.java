@@ -29,9 +29,8 @@
      for (int i = 0; i <= k.length - 1; i++) {
        FatherPane kk = (FatherPane)k[i];
        /********************************************************************/
-       if(kk.type==1&&s.contains("InstantGraph")){
-         //Main.win.instantPane = (InstantPane) kk;
-    	   return kk;
+       if(kk.type==1&&s.contains("TD:")){
+          return kk;
        }
        /********************************************************************/
        if ((kk.state == 0) && 
@@ -79,6 +78,11 @@
        if(tmp_mp.type!=1){
     	   Main.win.myInfoPane.setDescription(((MyPane)tmp_mp).dd.getInteractionDescription());
        }
+       if(tmp_mp instanceof InstantPane){
+           String s = ((InstantPane)tmp_mp).getTitle();
+           int index = Integer.parseInt(s.substring(2, s.indexOf(":")));
+           Main.win.myInfoPane.setDescription(Main.win.subProblemDiagrams[index - 1].getInteractionDescription());
+       }
        /********************************************************************/
  
        Main.win.nowIntPane = null;
@@ -97,7 +101,7 @@
 
        /********************************************************************/
        
-       if (mp!=null&&(mp.dd.getTitle().equals("ContextDiagram")) && //mp!=nullÊÇºóÀ´¼ÓµÄ
+       if (mp!=null&&(mp.dd.getTitle().equals("ContextDiagram")) && //mp!=nullï¿½Çºï¿½ï¿½ï¿½ï¿½Óµï¿½
          (Main.win.myProblemDiagram != null)) {
          Diagram tmp_d = Main.win.myProblemDiagram.refreshContextDiagram();
          mp.dd = tmp_d;

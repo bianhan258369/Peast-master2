@@ -48,7 +48,7 @@ public class Main extends JFrame implements ActionListener {
 	ClockDiagram[] clockDiagrams;
 	public LinkedList<IntDiagram> myIntDiagram = new LinkedList<IntDiagram>();
 	public InstantPane instantPane = null;
-	public InstantPane[] instantPanes = new InstantPane[100];
+	public LinkedList<InstantPane> instantPanes = new LinkedList<>();
 	/*************************************************************************/
 	DisplayPane myDisplayPane = new DisplayPane();
 	JSplitPane all = new JSplitPane();
@@ -113,7 +113,8 @@ public class Main extends JFrame implements ActionListener {
 
 
     private void loadProjectXML() throws DocumentException {
-		clear();
+		if(myDrawPane.getI() == 0) clear();
+		//this.myDrawPane.setState(0);
         JFileChooser jFileChooser = new JFileChooser();
         jFileChooser.setDialogTitle("Load Project from XML File");
         jFileChooser.addChoosableFileFilter(new XMLFileFilter());
@@ -388,7 +389,8 @@ public class Main extends JFrame implements ActionListener {
 				subProblemDiagrams[count - 1] = diagram;
 				clockDiagrams[count - 1] = new ClockDiagram(diagram);
 				clockDiagrams[count - 1].setTitle("ClockDiagram" + count);
-				this.myDisplayPane.addPane(new MyPane(clockDiagrams[count - 1]), "Sub" + clockDiagrams[count - 1].getTitle());
+				//clockDiagrams[count - 1].setTitle("SCD" + count + ":" + ((Oval)clockDiagrams[count - 1].getRequirements().get(0)).getText());
+				this.myDisplayPane.addPane(new MyPane(clockDiagrams[count - 1]), "SCD" + count + ":" + ((Oval)clockDiagrams[count - 1].getRequirements().get(0)).getText());
 				count++;
 			}
 			this.myProblemDiagram = new Diagram("ProblemDiagram",file);
@@ -410,14 +412,15 @@ public class Main extends JFrame implements ActionListener {
 					try{
 						Rect problemDomain = (Rect) subProblemDiagrams[i].getProblemDomains().get(j);
 						InstantGraph instantGraph = new InstantGraph(problemDomain, clockDiagrams[i].getClocks().get(j),i);
-						if(instantPanes[i] == null) instantPanes[i] = new InstantPane(instantGraph);
-						else instantPanes[i].addGraph(instantGraph);
+						if(instantPanes.size() < i + 1) instantPanes.add(new InstantPane(instantGraph));
+						else instantPanes.get(i).addGraph(instantGraph);
 					}
 					catch (Exception e){
 						e.printStackTrace();
 					}
 				}
-				this.myDisplayPane.addPane(instantPanes[i],"InstantGraph" + (i + 1));
+				instantPanes.get(i).setTitle("TD" + (i + 1) + ":" + ((Oval)subProblemDiagrams[i].getRequirements().get(0)).getText());
+				this.myDisplayPane.addPane(instantPanes.get(i),"TD" + (i + 1) + ":" + ((Oval)subProblemDiagrams[i].getRequirements().get(0)).getText());
 			}
 		}
     }
@@ -444,25 +447,12 @@ public class Main extends JFrame implements ActionListener {
 			new OntologyShow().show();
 		}
 		if (e.getActionCommand().equals("About")) {
-			String s = "DPTool Version1.0\n1.It is a graphical supporting tool for describing and analyzing software problem and performing the problem projection.\n2.It provides guidance of problem description and projection.\n3.It brings scenario into PF for conducting a scenario based problem projection and implements scenario-extended problem description and automated problem projection.\n4.Some checking techniques are included for ensuring the quality of the requirements document.\n";
-			s = s
-					+ "\nCopyright 2010 Academy of Mathematics and Systems Science, Chinese Academy of Sciences All Rights Reserved";
-			s = s + "\nAuthor:Zhi Jin,Bin Yin,Xiaohong Chen";
+			String s = "tool to show clock specification";
 			JOptionPane.showMessageDialog(this, s, "About PFTool", 1);
 		}
 	}
 
 	public void setButtonState(int i) {
-		if (i == -2) {
-			buttonClear();
-			this.load.setEnabled(true);
-		}
-		if (i == -1) {
-			buttonClear();
-			this.news.setEnabled(true);
-			this.open.setEnabled(true);
-			this.load.setEnabled(true);
-		}
 		if (i == 0) {
 			buttonClear();
 			this.load.setEnabled(true);
@@ -470,8 +460,11 @@ public class Main extends JFrame implements ActionListener {
 			this.open.setEnabled(true);
 			this.save.setEnabled(true);
 			this.check.setEnabled(true);
+			this.myDrawPane.jLabel[0].setEnabled(true);
+			this.myDrawPane.jLabel[1].setEnabled(false);
+			this.myDrawPane.jLabel[2].setEnabled(false);
+			this.myDrawPane.jLabel[3].setEnabled(false);
 			this.myDrawPane.jb1.setEnabled(true);
-			this.b_machine.setEnabled(true);
 		}
 		if (i == 1) {
 			buttonClear();
@@ -480,8 +473,19 @@ public class Main extends JFrame implements ActionListener {
 			this.open.setEnabled(true);
 			this.save.setEnabled(true);
 			this.check.setEnabled(true);
+			this.myDrawPane.jLabel[0].setEnabled(false);
+			this.myDrawPane.jLabel[1].setEnabled(true);
+			this.myDrawPane.jLabel[2].setEnabled(false);
+			this.myDrawPane.jLabel[3].setEnabled(false);
 			this.myDrawPane.jb1.setEnabled(true);
-			this.b_givendomain.setEnabled(true);
+			instantPane.addBut.setEnabled(false);
+			instantPane.combineBut.setEnabled(false);
+			instantPane.createTxtBut.setEnabled(false);
+			for(int j = 0;j < instantPanes.size();j++){
+				instantPanes.get(i).addBut.setEnabled(false);
+				instantPanes.get(i).combineBut.setEnabled(false);
+				instantPanes.get(i).createTxtBut.setEnabled(false);
+			}
 		}
 		if (i == 2) {
 			buttonClear();
@@ -490,8 +494,18 @@ public class Main extends JFrame implements ActionListener {
 			this.open.setEnabled(true);
 			this.save.setEnabled(true);
 			this.check.setEnabled(true);
-			this.myDrawPane.jb1.setEnabled(true);
-			this.b_interface.setEnabled(true);
+			this.myDrawPane.jLabel[0].setEnabled(false);
+			this.myDrawPane.jLabel[1].setEnabled(false);
+			this.myDrawPane.jLabel[2].setEnabled(true);
+			this.myDrawPane.jLabel[3].setEnabled(false);
+			instantPane.addBut.setEnabled(true);
+			instantPane.combineBut.setEnabled(true);
+			instantPane.createTxtBut.setEnabled(true);
+			for(int j = 0;j < instantPanes.size();j++){
+				instantPanes.get(i).addBut.setEnabled(true);
+				instantPanes.get(i).combineBut.setEnabled(true);
+				instantPanes.get(i).createTxtBut.setEnabled(true);
+			}
 		}
 		if (i == 3) {
 			buttonClear();
@@ -500,7 +514,18 @@ public class Main extends JFrame implements ActionListener {
 			this.open.setEnabled(true);
 			this.save.setEnabled(true);
 			this.check.setEnabled(true);
-			this.myDrawPane.jb1.setEnabled(true);
+			this.myDrawPane.jLabel[0].setEnabled(false);
+			this.myDrawPane.jLabel[1].setEnabled(false);
+			this.myDrawPane.jLabel[2].setEnabled(false);
+			this.myDrawPane.jb1.setEnabled(false);
+			instantPane.addBut.setEnabled(false);
+			instantPane.combineBut.setEnabled(false);
+			instantPane.createTxtBut.setEnabled(false);
+			for(int j = 0;j < instantPanes.size();j++){
+				instantPanes.get(i).addBut.setEnabled(false);
+				instantPanes.get(i).combineBut.setEnabled(false);
+				instantPanes.get(i).createTxtBut.setEnabled(false);
+			}
 		}
 		if ((i == 4) || (i == 5)) {
 			buttonClear();
@@ -729,12 +754,12 @@ public class Main extends JFrame implements ActionListener {
 		double width = d.getWidth();
 		double height = d.getHeight();
 
-		this.all.setDividerLocation((int) (0));
+		this.all.setDividerLocation((int) (width / 8.0D));
 		this.rightp.setDividerLocation((int) (5.0D * width / 7.0D));
 		this.rightp.setLeftComponent(this.myDisplayPane);
 		this.rightp.setRightComponent(this.myInfoPane);
 		getContentPane().add(this.all);
 		toolBarInit();
-		setButtonState(-2);
+		setButtonState(0);
 	}
 }

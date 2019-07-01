@@ -571,7 +571,6 @@ public class Diagram implements Serializable {
 			}
 
 		}
-
 		return this.interactionDescription;
 	}
 

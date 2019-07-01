@@ -48,7 +48,7 @@ public class ClockDialog extends JDialog implements ActionListener {
 			dispose();
 			myClock.updateUnit(unitText.getText());
 			for(int i = 0;i < Main.win.myIntDiagram.size();i++){
-				InstantPane instantPane = Main.win.instantPanes[i];
+				InstantPane instantPane = Main.win.instantPanes.get(i);
 				for(int j = 0;j < instantPane.igs.size();j++){
 					InstantGraph ig = instantPane.igs.get(j);
 					if(ig.getClock().getName().equals(myClock.getName()) && ig.getClock().getDomainText().equals(myClock.getDomainText()) && !ig.getClock().getUnit().equals(myClock.getUnit())){

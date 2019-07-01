@@ -157,16 +157,16 @@ public class MyPane extends FatherPane implements MouseMotionListener,
 		if ((e.getClickCount() == 2) && (this.nowSelected != null)) {
 			/***********************************************************************/
 			if (this.nowSelected.shape == 0
-					&& !dd.getTitle().contains("ClockDiagram")) {//·ÇÊ±ÖÓÍ¼£¬¸Ä¹ý
+					&& !dd.getTitle().contains("ClockDiagram")) {//ï¿½ï¿½Ê±ï¿½ï¿½Í¼ï¿½ï¿½ï¿½Ä¹ï¿½
 				new RectEditor((Rect) this.nowSelected).show();
 			}
 			if (this.nowSelected.shape == 2
-					&& !dd.getTitle().contains("ClockDiagram")) {//·ÇÊ±ÖÓÍ¼£¬¸Ä¹ý
+					&& !dd.getTitle().contains("ClockDiagram")) {//ï¿½ï¿½Ê±ï¿½ï¿½Í¼ï¿½ï¿½ï¿½Ä¹ï¿½
 				new LineEditor((Line) this.nowSelected, this.dd.getMachine(),
 						this.dd).show();
 			}
 
-			if (this.nowSelected.shape == 0 && dd.getTitle().contains("ClockDiagram")) {//·ÇÊ±ÖÓÍ¼£¬¸Ä¹ý
+			if (this.nowSelected.shape == 0 && dd.getTitle().contains("ClockDiagram")) {//ï¿½ï¿½Ê±ï¿½ï¿½Í¼ï¿½ï¿½ï¿½Ä¹ï¿½
 				Rect temp=(Rect)this.nowSelected;
 				Clock clock = null;
 				if(temp.getState()!=2){
@@ -200,8 +200,7 @@ public class MyPane extends FatherPane implements MouseMotionListener,
 			}
 			this.dd.follow(this.nowSelected);
 			Main.win.repaint();
-			Main.win.myInfoPane.setDescription(this.dd
-					.getInteractionDescription());
+			Main.win.myInfoPane.setDescription(this.dd.getInteractionDescription());
 		}
 	}
 
