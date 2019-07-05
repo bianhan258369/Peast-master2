@@ -36,7 +36,6 @@ public class IntDiagram implements Serializable {
 	public IntDiagram(String title, int biaohao, File file){
 		this.title = title;
 		this.biaohao = biaohao;
-		System.out.println(title);
 		try{
 			SAXReader saxReader = new SAXReader();
 			Document document = saxReader.read(file);
@@ -389,7 +388,13 @@ public class IntDiagram implements Serializable {
 			for(int i = 0;i < replaces.size();i++){
 				Changjing replace = (Changjing) changjing.get(replaces.get(i));
 				changjing.remove(replace);
-				changjing.add(new Changjing(replace.getDian(), replace.getTo(), replace.getFrom(), replace.getState()));
+				LinkedList dians = replace.getDian();
+				LinkedList newDians = new LinkedList();
+				newDians.add(dians.get(2));
+				newDians.add(dians.get(3));
+				newDians.add(dians.get(0));
+				newDians.add(dians.get(1));
+				changjing.add(new Changjing(newDians, replace.getTo(), replace.getFrom(), replace.getState()));
 			}
 		}catch (DocumentException e) {
 			e.printStackTrace();

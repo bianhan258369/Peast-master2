@@ -43,7 +43,6 @@ public class InstantGraph implements Serializable {
 		this.clock = clock;
 		this.domain = domain;
 		this.problemDiagram = Main.win.myProblemDiagram;
-
 		if (problemDiagram == null)
 			return;
 
@@ -61,9 +60,9 @@ public class InstantGraph implements Serializable {
 				 phenomenons.add(temp_p);
 			}
 		}
-		setOrder();
+		//setOrder();
 		try {
-			fixInteractions(this.phenomenons);
+			//fixInteractions(this.phenomenons);
 		} catch (Exception e){
 			e.printStackTrace();
 		}
@@ -97,7 +96,7 @@ public class InstantGraph implements Serializable {
 
 		this.clock = clock;
 		this.domain = domain;
-		this.problemDiagram = Main.win.myProblemDiagram;
+		this.problemDiagram = Main.win.subProblemDiagrams[index];
 
 		if (problemDiagram == null)
 			return;
@@ -123,9 +122,9 @@ public class InstantGraph implements Serializable {
 				}
 			}
 		}
-		setOrder();
+		//setOrder();
 		try {
-			fixInteractions(this.phenomenons);
+			//fixInteractions(this.phenomenons);
 		} catch (Exception e){
 			e.printStackTrace();
 		}
@@ -293,17 +292,78 @@ public class InstantGraph implements Serializable {
 		g.setFont(font1);
 		g.drawString(this.getName(), originX + 3, originY - 8);
 		g.setFont(tmp);
-		g.drawLine(originX + 20, originY - 10, originX + length, originY - 10);
-		g.fillPolygon(new int[] { originX + length, originX + length - 10,
-				originX + length - 10 }, new int[] { originY - 10,
-				originY - 15, originY - 5 }, 3);
-		// ������
+
+		/*
 		for (int i = 0; i < jiaohu.size(); i++) {
 			Jiaohu jh = (Jiaohu) this.jiaohu.get(i);
 			jh.draw(g);
 		}
-		// ����λ
-		g.drawString(clock.getUnit(), originX + length, originY + 5);
+		*/
+
+
+		LinkedList<Jiaohu> nowJiaohu = new LinkedList<>();
+		LinkedList<Changjing> nowChangjing = new LinkedList<>();
+		LinkedList<Jiaohu> absentBehaviourJiaohu = new LinkedList<>();
+		LinkedList<Jiaohu> absentExpectJiaohu = new LinkedList<>();
+		LinkedList<Jiaohu> allJiaohu = intDiagram.getJiaohu();
+		Set<Integer> tempBehaviourSet = new HashSet<>();
+		Set<Integer> tempExpectSet = new HashSet<>();
+		for(int i = 0;i < jiaohu.size();i++){
+			if(jiaohu.get(i).getState() == 0) tempBehaviourSet.add(jiaohu.get(i).getNumber());
+			if(jiaohu.get(i).getState() == 1) tempExpectSet.add(jiaohu.get(i).getNumber());
+		}
+		for(int i = 0;i < allJiaohu.size();i++){
+			int number = allJiaohu.get(i).getNumber();
+			if((tempBehaviourSet.contains(number) || tempExpectSet.contains(number)) && !nowJiaohu.contains(allJiaohu.get(i))) nowJiaohu.add(allJiaohu.get(i));
+			if(allJiaohu.get(i).getState() == 0 && !tempBehaviourSet.contains(number)) absentBehaviourJiaohu.add(allJiaohu.get(i));
+			if(allJiaohu.get(i).getState() == 1 && !tempExpectSet.contains(number)) absentExpectJiaohu.add(allJiaohu.get(i));
+		}
+		for(int i = 0;i < absentBehaviourJiaohu.size();i++){
+			Jiaohu absent = absentBehaviourJiaohu.get(i);
+			LinkedList<Jiaohu> toAbsent = new LinkedList<>();
+			LinkedList<Jiaohu> fromAbsent = new LinkedList<>();
+			for(int j = 0;j < intDiagram.getChangjing().size();j++){
+				Changjing changjing = (Changjing) intDiagram.getChangjing().get(j);
+				Jiaohu from = changjing.getFrom();
+				Jiaohu to = changjing.getTo();
+				if((!absentBehaviourJiaohu.contains(from)) && (!absentBehaviourJiaohu.contains(to)) && (changjing.getState() == 1 || changjing.getState() == 3)) nowChangjing.add(changjing);
+				if(from.equals(absent) && !fromAbsent.contains(to)) fromAbsent.add(to);
+				if(to.equals(absent) && !toAbsent.contains(from)) toAbsent.add(from);
+			}
+			for(int j = 0;j < fromAbsent.size();j++){
+				Jiaohu tempFrom = fromAbsent.get(j);
+				for(int k = 0;k < toAbsent.size();k++){
+					Jiaohu tempTo = toAbsent.get(j);
+					nowChangjing.add(new Changjing(new LinkedList(),tempFrom,tempTo,1));
+				}
+			}
+		}
+
+		for(int i = 0;i < absentExpectJiaohu.size();i++){
+			Jiaohu absent = absentExpectJiaohu.get(i);
+			LinkedList<Jiaohu> toAbsent = new LinkedList<>();
+			LinkedList<Jiaohu> fromAbsent = new LinkedList<>();
+			for(int j = 0;j < intDiagram.getChangjing().size();j++){
+				Changjing changjing = (Changjing) intDiagram.getChangjing().get(j);
+				Jiaohu from = changjing.getFrom();
+				Jiaohu to = changjing.getTo();
+				if((!absentExpectJiaohu.contains(from)) && (!absentExpectJiaohu.contains(to)) && (changjing.getState() == 1 || changjing.getState() == 3)) nowChangjing.add(changjing);
+				if(from.equals(absent) && !fromAbsent.contains(to)) fromAbsent.add(to);
+				if(to.equals(absent) && !toAbsent.contains(from)) toAbsent.add(from);
+			}
+			for(int j = 0;j < fromAbsent.size();j++){
+				Jiaohu tempFrom = fromAbsent.get(j);
+				for(int k = 0;k < toAbsent.size();k++){
+					Jiaohu tempTo = toAbsent.get(j);
+					nowChangjing.add(new Changjing(new LinkedList(),tempFrom,tempTo,3));
+				}
+			}
+		}
+
+		for(int i = 0;i < nowJiaohu.size();i++) nowJiaohu.get(i).draw(g);
+		for(int i = 0;i < nowChangjing.size();i++) nowChangjing.get(i).draw(g);
+
+		//g.drawString(clock.getUnit(), originX + length, originY + 5);
 	}
 
 	public void draw(Graphics g, boolean inClockSpecification) {
@@ -320,10 +380,16 @@ public class InstantGraph implements Serializable {
 					originX + length - 10 }, new int[] { originY + 90,
 					originY + 85, originY + 95 }, 3);
 			// ������
+			/*
 			for (int i = 0; i < jiaohu.size(); i++) {
 				Jiaohu jh = (Jiaohu) this.jiaohu.get(i);
 				jh.setSize(jh.getMiddleX(), jh.getMiddleY() + 100);
 				jh.draw(g);
+			}
+			*/
+			for(int i = 0;i < whichDiagram().getJiaohu().size();i++){
+				Jiaohu tempJiaohu = (Jiaohu) whichDiagram().getJiaohu().get(i);
+				tempJiaohu.draw(g);
 			}
 			// ����λ
 			g.drawString(clock.getUnit(), originX + length, originY + 105);

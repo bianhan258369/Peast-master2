@@ -131,7 +131,7 @@ public class Jiaohu implements Serializable, Comparable<Jiaohu> {
 		if(obj instanceof Jiaohu){
 			Jiaohu temp = (Jiaohu)obj;
 			//return (this.state == temp.state && this.number == temp.number);
-			return this.number == temp.number;
+			//return this.number == temp.number;
 		}
 		return false;
 	}

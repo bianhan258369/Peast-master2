@@ -321,7 +321,7 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 			}
 		}
 
-
+		/*
 		// order from different InstantGraphs
 		for(int i = 0 ;i < this.igs.size();i++){
 			for(int j = i + 1;j < this.igs.size();j++){
@@ -361,6 +361,7 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 				}
 			}
 		}
+		*/
 
 	}
 
