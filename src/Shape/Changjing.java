@@ -13,7 +13,7 @@
 	import java.util.LinkedList;
  
  public class Changjing
-   implements Serializable
+   implements Serializable, Cloneable
  {
    private int state;
    private LinkedList dian = new LinkedList<>();
@@ -181,6 +181,10 @@
      }
      return this.dian.size();
    }
+
+   public void setState(int state){
+     this.state = state;
+   }
  
    public void draw(Graphics g)
    {
@@ -201,6 +205,9 @@
      }
      if (this.state == 4) {
        g.setColor(new Color(182, 88, 157));
+     }
+     if(this.state == 5) {
+       g.setColor(Color.black);
      }
      if (this.dian.size() == 0) {
        if (this.state != 3) {
@@ -395,5 +402,16 @@
 
    public void print(){
      System.out.println("from : " + this.getFrom().getName() + this.getFrom().getNumber() + " to : " + this.getTo().getName() + this.getTo().getNumber());
+   }
+
+   @Override
+   public boolean equals(Object obj) {
+     Changjing changjing = (Changjing)obj;
+     return (this.getFrom().equals(changjing.getFrom()) && this.getTo().equals(changjing.getTo()) && this.getState() == changjing.getState());
+   }
+
+   @Override
+   public Object clone() throws CloneNotSupportedException {
+     return (Changjing)super.clone();
    }
  }

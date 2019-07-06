@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class IntDiagram implements Serializable {
+public class IntDiagram implements Serializable,Cloneable {
 	
 	/****************************************************/
 	private static final long serialVersionUID = -6036556398408475676L;
@@ -22,7 +22,6 @@ public class IntDiagram implements Serializable {
 	private LinkedList jiaohu = new LinkedList();
 	private String title;
 	private int biaohao;
-	HashMap<Integer, Integer> replaceChangjing = new HashMap<>();//前一个是场景的index，后一个是交互的编号
 
 	public int getBiaohao() {
 		return this.biaohao;
@@ -640,4 +639,21 @@ public class IntDiagram implements Serializable {
 			}
 		}
 	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		IntDiagram intDiagram = (IntDiagram) super.clone();
+		LinkedList<Jiaohu> tempJiaohu = new LinkedList<>();
+		LinkedList<Changjing> tempChangjing = new LinkedList<>();
+		for(int i = 0;i < this.jiaohu.size();i++){
+			tempJiaohu.add((Jiaohu) ((Jiaohu)this.jiaohu.get(i)).clone());
+		}
+		for(int i = 0;i < this.changjing.size();i++){
+			tempChangjing.add((Changjing) ((Changjing)this.changjing.get(i)).clone());
+		}
+		intDiagram.changjing = tempChangjing;
+		intDiagram.jiaohu = tempJiaohu;
+		return intDiagram;
+	}
+
 }

@@ -61,4 +61,13 @@
    public Oval getRequirement() {
      return this.requirement;
    }
+
+   @Override
+   public boolean equals(Object obj) {
+     if(obj instanceof Phenomenon){
+       Phenomenon temp = (Phenomenon)obj;
+       return this.getBiaohao() == temp.getBiaohao() && this.getName().equals(temp.getName());
+     }
+     return false;
+   }
  }

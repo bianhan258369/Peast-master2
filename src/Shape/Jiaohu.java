@@ -9,7 +9,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.io.Serializable;
 
-public class Jiaohu implements Serializable, Comparable<Jiaohu> {
+public class Jiaohu implements Serializable, Comparable<Jiaohu>,Cloneable {
 	/**
 	 * 
 	 */
@@ -56,9 +56,9 @@ public class Jiaohu implements Serializable, Comparable<Jiaohu> {
 	}
 
 	public void draw(Graphics g) {
-		if (this.selected)
+		if (this.selected && this.state != 2)
 			g.setColor(Color.red);
-		if (this.state == 0)
+		if (this.state == 0 || this.state ==2)
 			g.drawOval(this.x1, this.y1, this.x2, this.y2);
 		if (this.state == 1) {
 			Graphics2D g2 = (Graphics2D) g;
@@ -81,14 +81,13 @@ public class Jiaohu implements Serializable, Comparable<Jiaohu> {
 			Graphics2D g2 = (Graphics2D) g;
 			g2.fillOval(this.x1 + 1, this.y1 + 1, this.x2 - 1, this.y2 - 1);
 		}
-
 		g.setColor(Color.black);
-		drawXiaBiao(g, this.x1 + 11, this.y1 + this.y2 / 2 + - 10, Math.abs(this.number));
+		drawXiaBiao(g, this.x1 + 11, this.y1 + this.y2 / 2 + 8, Math.abs(this.number));
 	}
 
 	public void drawXiaBiao(Graphics g, int x, int y, int num) {
 		g.drawString(this.getName(), x, y);
-		Font font1 = new Font("SansSerif", 0, 9);
+		Font font1 = new Font("SansSerif", 0, 10);
 		Font tmp = g.getFont();
 		g.setFont(font1);
 		g.drawString("" + num, x + 23, y + 1);
@@ -130,7 +129,7 @@ public class Jiaohu implements Serializable, Comparable<Jiaohu> {
 	public boolean equals(Object obj) {
 		if(obj instanceof Jiaohu){
 			Jiaohu temp = (Jiaohu)obj;
-			//return (this.state == temp.state && this.number == temp.number);
+			return (this.state == temp.state && this.number == temp.number);
 			//return this.number == temp.number;
 		}
 		return false;
@@ -142,4 +141,8 @@ public class Jiaohu implements Serializable, Comparable<Jiaohu> {
 		return this.x1 - o.x1;
 	}
 
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return (Jiaohu)super.clone();
+	}
 }

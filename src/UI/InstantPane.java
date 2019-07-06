@@ -150,10 +150,7 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 		 * { if (igs.get(i).getClock().getName()
 		 * .equals(newIg.getClock().getName())) index = i + 1; }
 		 */
-		newIg.setPosition(20, count * 60 + 60);/*
-												 * ��λÿ��ͼ�����ꣻi*60+60��
-												 * ��һ��60����ͼ��࣬�ڶ���60�ǵ�һ��ͼ��Y����
-												 */
+		newIg.setPosition(count * 200 + 20, 60);
 		igs.add(newIg);
 		count++;
 
@@ -289,6 +286,11 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 		Arrow arrow = new Arrow();
 		if (this.igs != null) {
 			// igs.get(0).draw(g);
+			/*
+			for (int i = 0; i < count; i++) {
+				igs.get(i).draw(g);
+			}
+			*/
 			for (int i = 0; i < count; i++) {
 				igs.get(i).draw(g);
 			}
