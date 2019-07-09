@@ -1,6 +1,7 @@
 package UI;
 
 import java.awt.*;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -43,7 +44,8 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 	LinkedList<Pair<String, List<Integer>>> params = new LinkedList<>();
 	LinkedList<Jiaohu> froms = new LinkedList<>();
 	LinkedList<Jiaohu> tos = new LinkedList<>();
-	// ��ǰ����λ��
+    LinkedList<Colour> colors = new LinkedList<>();
+    // ��ǰ����λ��
 	int nowx = 0;
 	int nowy = 0;
 	// ��קǰλ��
@@ -285,15 +287,34 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 		super.paint(g);
 		Arrow arrow = new Arrow();
 		if (this.igs != null) {
-			// igs.get(0).draw(g);
-			/*
-			for (int i = 0; i < count; i++) {
-				igs.get(i).draw(g);
+			for (int i = 0; i < igs.size(); i++) {
+				InstantGraph ig = igs.get(i);
+				Colour myColor = ig.getClock().getColor();
+				Color color = new Color(myColor.getR(), myColor.getG(), myColor.getB());
+				for(int j = 0;j < ig.getJiaohu().size();j++){
+				    Jiaohu jiaohu = ig.getJiaohu().get(j);
+				    jiaohu.draw(g,color);
+                }
+                g.setColor(Color.black);
+                Font font1 = new Font("SansSerif", 0, 9);
+				g.setFont(font1);
+				g.drawString(ig.getDomain().getShortName() + ":",30,30+10 * i);
+				g.setColor(color);
+				g.fillOval(50,20 + 10 * i,10,10);
 			}
-			*/
-			for (int i = 0; i < count; i++) {
-				igs.get(i).draw(g);
-			}
+			for(int i = 0;i < igs.get(0).getIntDiagram().getChangjing().size();i++){
+			    Changjing changjing = (Changjing) igs.get(0).getIntDiagram().getChangjing().get(i);
+                if(changjing.getState() != 4){
+                    if(changjing.getState() != 2){
+                        changjing.setState(5);
+                        changjing.draw(g);
+                    }
+                }
+                else {
+                    Changjing reverse = new Changjing(changjing.getDian(), changjing.getTo(), changjing.getFrom(), 5);
+                    reverse.draw(g);
+                }
+            }
 		}
 		for(int i = 0;i < ClockRelations.size();i++){
 			String str = new String("");
@@ -918,4 +939,5 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 	public String getTitle() {
 		return title;
 	}
+
 }

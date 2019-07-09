@@ -5,6 +5,8 @@ import java.io.Serializable;
 import java.util.*;
 
 import Shape.*;
+import Shape.Colour;
+import foundation.Constraint;
 import org.eclipse.swt.internal.C;
 
 public class InstantGraph implements Serializable {
@@ -20,12 +22,14 @@ public class InstantGraph implements Serializable {
 
 	private LinkedList<Jiaohu> nowJiaohu = new LinkedList<>();
 	private LinkedList<Changjing> nowChangjing = new LinkedList<>();
+	private LinkedList<Changjing> changjing = new LinkedList<>();
 	private IntDiagram intDiagram = null;
 	private LinkedList<Phenomenon> phenomenons = new LinkedList<Phenomenon>();// �������������йص�����
 	private LinkedList<String> constraint = new LinkedList<String>();// ��Ŵ�ʱ��ͼ��Լ�����
 	private LinkedList<Jiaohu> jiaohu = new LinkedList<Jiaohu>(); // ���潻��
 	private Hashtable<Integer, String> weight = new Hashtable<Integer, String>();//���潻����˳��
-
+	static LinkedList<Colour> colors = new LinkedList<>();
+	static Map<String, Colour> domainColors = new HashMap<>();
 	private Rect domain;// Ҫ����ʱ��ͼ��������
 	private Clock clock;
 	private Diagram problemDiagram;// ����ͼ
@@ -34,6 +38,23 @@ public class InstantGraph implements Serializable {
 	int originY;// ������ԭ��Y����
 
 	int length;// �����᳤��
+
+	static {
+		colors.add(new Colour(255,228,196));
+		colors.add(new Colour(255,0,0));
+		colors.add(new Colour(165,42,42));
+		colors.add(new Colour(255,165,0));
+		colors.add(new Colour(255,255,0));
+		colors.add(new Colour(0,128,0));
+		colors.add(new Colour(0,255,255));
+		colors.add(new Colour(205,133,63));
+		colors.add(new Colour(153,50,204));
+		colors.add(new Colour(255,0,255));
+		colors.add(new Colour(255,182,193));
+		colors.add(new Colour(211,211,211));
+		colors.add(new Colour(255,127,80));
+		colors.add(new Colour(255,215,0));
+	}
 
 	public InstantGraph(Rect domain, Clock clock) {
 
@@ -91,15 +112,42 @@ public class InstantGraph implements Serializable {
 		originX = 20;
 		originY = 60;
 		length = 800;
-
-		this.clock = clock;
 		this.domain = domain;
+		this.clock = clock;
 		this.problemDiagram = Main.win.subProblemDiagrams[index];
 		this.intDiagram = (IntDiagram) Main.win.myIntDiagram.get(index).clone();
+		if (problemDiagram == null) return;
 
-		if (problemDiagram == null)
-			return;
+		if(!domainColors.containsKey(domain.getShortName())){
+			Random random = new Random();
+			int colorIndex = random.nextInt(colors.size());
+			clock.setColor(colors.get(colorIndex));
+			domainColors.put(domain.getShortName(), colors.get(colorIndex));
+			System.out.println(domain.getShortName() + " : " + colors.get(colorIndex).toString());
+			colors.remove(colorIndex);
+		}
+		else clock.setColor(domainColors.get(domain.getShortName()));
 
+		LinkedList tempJiaohu = intDiagram.getJiaohu();
+		LinkedList tempPhenomenon = problemDiagram.getPhenomenon();
+		this.setName(domain.getShortName());
+
+		for(int i = 0;i < tempJiaohu.size();i++){
+			Jiaohu temp_j = (Jiaohu) tempJiaohu.get(i);
+			int number = temp_j.getNumber();
+			for(int j = 0; j <tempPhenomenon.size();j++){
+				Phenomenon phenomenon = (Phenomenon) tempPhenomenon.get(j);
+				if(phenomenon.getBiaohao() == number){
+					if(phenomenon.getFrom().getShortName().equals(domain.getShortName()) || phenomenon.getTo().getShortName().equals(domain.getShortName())){
+						if(!phenomenons.contains(phenomenon)) phenomenons.add(phenomenon);
+						jiaohu.add(temp_j);
+						break;
+					}
+				}
+			}
+		}
+
+		/*
 		LinkedList tempPhenomenon = problemDiagram.getPhenomenon();
 		LinkedList tempJiaohu = intDiagram.getJiaohu();
 
@@ -240,6 +288,8 @@ public class InstantGraph implements Serializable {
 			}
 		}
 
+		this.changjing = allChangjing;
+
 
 		/*
 		// ɸѡ�����������������ص�����
@@ -266,8 +316,7 @@ public class InstantGraph implements Serializable {
 		} catch (Exception e){
 			e.printStackTrace();
 		}
-		*/
-		/*
+
 		int interactions_size = phenomenons.size();
 
 
@@ -287,6 +336,8 @@ public class InstantGraph implements Serializable {
 			jiaohu.add(tempJh);
 		}
 		*/
+
+
 	}
 
 	public InstantGraph(int intCount, String m_name, Clock clock) {
@@ -447,6 +498,7 @@ public class InstantGraph implements Serializable {
 	public void draw(Graphics g) {
 		// ��ͼ�ı�ʶ
 
+		/*
 		int minX = Integer.MAX_VALUE;
 		int maxX = 0;
 		int minY = Integer.MAX_VALUE;
@@ -513,6 +565,10 @@ public class InstantGraph implements Serializable {
 			g.drawString(this.getName(), minX-17, minY-38);
 			g.setFont(tmp);
 		}
+		*/
+
+
+
 	}
 
 	public void draw(Graphics g, boolean inClockSpecification) {
@@ -780,6 +836,10 @@ public class InstantGraph implements Serializable {
 			}
 		}
 		return null;
+	}
+
+	public IntDiagram getIntDiagram() {
+		return intDiagram;
 	}
 
 }

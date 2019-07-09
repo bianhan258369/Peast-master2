@@ -1,5 +1,7 @@
 package UI;
 
+import Shape.Colour;
+
 public class Clock {
 	
 	private String name;
@@ -13,6 +15,7 @@ public class Clock {
 	private String max=null;
 	private String offset=null;
 	private String domainText = null;
+	private Colour color;
 
 	/*
 	public Clock() {
@@ -34,6 +37,14 @@ public class Clock {
 		this.clockType=type;
 		this.unit=unit;
 		this.domainText = domainText;
+	}
+
+	public void setColor(Colour color){
+		this.color = color;
+	}
+
+	public Colour getColor() {
+		return this.color;
 	}
 
 	public String getDomainText(){

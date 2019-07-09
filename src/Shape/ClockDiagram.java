@@ -42,10 +42,6 @@ public class ClockDiagram extends Diagram {
 					g.setColor(Color.red);
 				}
 
-				String biao = tmpLine.name;
-				g.drawString(biao + "(CS)", (tmpLine.x1 + tmpLine.x2) / 2,
-						(tmpLine.y1 + tmpLine.y2) / 2);
-
 				g.setColor(Color.black);
 				tmp.draw(g);
 			}
@@ -86,8 +82,6 @@ public class ClockDiagram extends Diagram {
 	public void drawClock(Graphics g, int middleX, int middleY) {
 		Color temp = g.getColor();// ���浱ǰ���ʵ���ɫ
 		g.setColor(temp);
-		g.drawRect(middleX - 24, middleY, 24, 12);
-		g.drawString("" + "CS", middleX - 20, middleY + 12);
 		g.setColor(Color.black);
 	}
 

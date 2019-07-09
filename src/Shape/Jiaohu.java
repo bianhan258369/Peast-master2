@@ -85,6 +85,18 @@ public class Jiaohu implements Serializable, Comparable<Jiaohu>,Cloneable {
 		drawXiaBiao(g, this.x1 + 11, this.y1 + this.y2 / 2 + 8, Math.abs(this.number));
 	}
 
+	public void draw(Graphics g, Color color) {
+
+
+		g.drawOval(this.x1, this.y1, this.x2, this.y2);
+		g.setColor(Color.black);
+		g.setColor(color);
+		Graphics2D g2 = (Graphics2D) g;
+		g2.fillOval(this.x1 + 1, this.y1 + 1, this.x2 - 1, this.y2 - 1);
+		g.setColor(Color.black);
+		drawXiaBiao(g, this.x1 + 11, this.y1 + this.y2 / 2 + 8, Math.abs(this.number));
+	}
+
 	public void drawXiaBiao(Graphics g, int x, int y, int num) {
 		g.drawString(this.getName(), x, y);
 		Font font1 = new Font("SansSerif", 0, 10);
