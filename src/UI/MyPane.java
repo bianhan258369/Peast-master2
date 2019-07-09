@@ -166,11 +166,11 @@ public class MyPane extends FatherPane implements MouseMotionListener,
 						this.dd).show();
 			}
 
-			if (this.nowSelected.shape == 0 && dd.getTitle().contains("ClockDiagram")) {//��ʱ��ͼ���Ĺ�
+			if (this.nowSelected.shape == 0 && dd.getTitle().contains("ClockDiagram")) {
 				Rect temp=(Rect)this.nowSelected;
 				Clock clock = null;
+				int index = 0;
 				if(temp.getState()!=2){
-					new ClockDialog((Rect) this.nowSelected );
                     for(int i = 0;i < Main.win.cd.getClocks().size();i++){
                     	if(Main.win.cd.getClocks().get(i).getDomainText().equals(temp.getText())){
                     		clock = Main.win.cd.getClocks().get(i);
@@ -178,7 +178,13 @@ public class MyPane extends FatherPane implements MouseMotionListener,
 						}
 					}
                     try{
-                        new ClockSpecification((Rect) this.nowSelected,clock);
+                    	for(int i = 0;i < Main.win.clockDiagrams.length;i++){
+                    		if(Main.win.clockDiagrams[i] == Main.win.cd){
+                    			index = i;
+                    			break;
+							}
+						}
+                        new ClockSpecification((Rect) this.nowSelected,clock,index);
                     }
                     catch (Exception e1){
                         e1.printStackTrace();

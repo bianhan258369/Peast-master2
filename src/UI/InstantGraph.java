@@ -240,12 +240,6 @@ public class InstantGraph implements Serializable {
 			}
 		}
 
-		for(int i = 0;i < Main.win.myIntDiagram.get(index).getJiaohu().size();i++){
-			for(int j = 0;j < nowJiaohu.size();j++){
-				System.out.println(Main.win.myIntDiagram.get(index).getJiaohu().get(i) == nowJiaohu.get(j));
-			}
-		}
-
 
 		/*
 		// ɸѡ�����������������ص�����
@@ -524,32 +518,75 @@ public class InstantGraph implements Serializable {
 	public void draw(Graphics g, boolean inClockSpecification) {
 		// ��ͼ�ı�ʶ
 		if(inClockSpecification){
-			g.drawString("C", originX - 5, originY + 90);
-			Font font1 = new Font("SansSerif", 0, 9);
-			Font tmp = g.getFont();
-			g.setFont(font1);
-			g.drawString(this.getName(), originX + 3, originY + 92);
-			g.setFont(tmp);
-			g.drawLine(originX + 20, originY + 90, originX + length, originY + 90);
-			g.fillPolygon(new int[] { originX + length, originX + length - 10,
-					originX + length - 10 }, new int[] { originY + 90,
-					originY + 85, originY + 95 }, 3);
-			// ������
-			/*
-			for (int i = 0; i < jiaohu.size(); i++) {
-				Jiaohu jh = (Jiaohu) this.jiaohu.get(i);
-				jh.setSize(jh.getMiddleX(), jh.getMiddleY() + 100);
-				jh.draw(g);
-			}
-			*/
-			for(int i = 0;i < whichDiagram().getJiaohu().size();i++){
-				Jiaohu tempJiaohu = (Jiaohu) whichDiagram().getJiaohu().get(i);
-				tempJiaohu.draw(g);
-			}
-			// ����λ
-			g.drawString(clock.getUnit(), originX + length, originY + 105);
-		}
+			// ��ͼ�ı�ʶ
 
+			int minX = Integer.MAX_VALUE;
+			int maxX = 0;
+			int minY = Integer.MAX_VALUE;
+			int maxY = 0;
+
+			for(int i = 0;i < nowJiaohu.size();i++){
+				Jiaohu jiaohu = nowJiaohu.get(i);
+				jiaohu.setState(2);
+				jiaohu.draw(g);
+			}
+			for(int i = 0;i < nowChangjing.size();i++){
+				Changjing changjing = nowChangjing.get(i);
+				if(changjing.getState() != 4){
+					changjing.setState(5);
+					changjing.draw(g);
+				}
+				else {
+					Changjing reverse = new Changjing(changjing.getDian(), changjing.getTo(), changjing.getFrom(), 5);
+					reverse.draw(g);
+				}
+			}
+
+			if(nowJiaohu.size() > 0){
+				for(int i = 0;i < nowJiaohu.size();i++){
+					Jiaohu jiaohu = nowJiaohu.get(i);
+					if(jiaohu.getMiddleX() > maxX) maxX = jiaohu.getMiddleX();
+					if(jiaohu.getMiddleX() < minX) minX = jiaohu.getMiddleX();
+					if(jiaohu.getMiddleY() > maxY) maxY = jiaohu.getMiddleY();
+					if(jiaohu.getMiddleY() < minY) minY = jiaohu.getMiddleY();
+				}
+
+				for(int i = 0;i < nowChangjing.size();i++){
+					LinkedList dian = nowChangjing.get(i).getDian();
+					if(dian.size() == 4){
+						int x1 = (Integer.parseInt((String) dian.get(0)));
+						int x2 = (Integer.parseInt((String) dian.get(2)));
+						int y1 = (Integer.parseInt((String) dian.get(1)));
+						int y2 = (Integer.parseInt((String) dian.get(3)));
+						if(x1 > maxX) maxX = x1;
+						if(x2 > maxX) maxX = x2;
+						if(y1 > maxY) maxY = y1;
+						if(y2 > maxY) maxY = y2;
+						if(x1 < minX) minX = x1;
+						if(x2 < minX) minX = x2;
+						if(y1 < minY) minY = y1;
+						if(y2 < minY) minY = y2;
+					}
+				}
+
+				Graphics2D g2 = (Graphics2D) g;
+				BasicStroke dashed = new BasicStroke(1.0F, 0, 0, 10.0F,
+						Data.LENGTHOFDASH, 0.0F);
+
+				g2.setStroke(dashed);
+				g2.drawLine(minX - 35, minY - 35, maxX + 35, minY - 35);
+				g2.drawLine(minX - 35,minY - 35,minX - 35,maxY + 35);
+				g2.drawLine(maxX + 35,maxY + 35,maxX + 35,minY - 35);
+				g2.drawLine(maxX + 35,maxY + 35,minX - 35,maxY + 35);
+
+				g.drawString("C", minX-25, minY-40);
+				Font font1 = new Font("SansSerif", 0, 9);
+				Font tmp = g.getFont();
+				g.setFont(font1);
+				g.drawString(this.getName(), minX-17, minY-38);
+				g.setFont(tmp);
+			}
+		}
 	}
 
 	public Jiaohu whichSelected(int x, int y) {

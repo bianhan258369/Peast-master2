@@ -8,12 +8,12 @@ import java.awt.event.ActionListener;
 
 public class ClockSpecification extends JDialog{
     InstantGraph instantGraph = null;
-    public ClockSpecification(Rect domain, Clock clock){
-        setSize(1200, 376);
+    public ClockSpecification(Rect domain, Clock clock, int index){
+        setSize(600, 800);
         setLocation((int) getWidth() / 2, (int) getHeight() / 2);
         setTitle("ClockSpecification");
         try{
-            instantGraph = new InstantGraph(domain, clock);
+            instantGraph = new InstantGraph(domain, clock,index);
         }
         catch (Exception e){
             e.printStackTrace();

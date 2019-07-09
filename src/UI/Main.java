@@ -709,7 +709,7 @@ public class Main extends JFrame implements ActionListener {
 
 	public Main() {
 		super(
-				"DPTool: A Tool for supporting the Problem Description and Projection");
+				"A Tool For Generating Clock Specification And Timing Diagram");
 
 		this.chooser = new JFileChooser();
 		setJMenuBar(this.menuBar);
