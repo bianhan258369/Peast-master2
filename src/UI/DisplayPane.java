@@ -108,7 +108,6 @@
          Main.win.myContextDiagram = tmp_d;
          Main.win.repaint();
          Main.win.myInfoPane.setDescription(Main.win.myContextDiagram.getInteractionDescription());
-         Main.win.buttonClear();
        }
      }
  

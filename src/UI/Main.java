@@ -29,6 +29,7 @@ public class Main extends JFrame implements ActionListener {
 	JMenu file = new JMenu("File");
 	JMenu help = new JMenu("Help");
 	JMenu ontology = new JMenu("Ontology");
+	JMenu constraint = new JMenu("Constraint");
 	JMenuItem save = new JMenuItem("Save");
 	JMenuItem open = new JMenuItem("Open");
 	JMenuItem news = new JMenuItem("New");
@@ -37,6 +38,9 @@ public class Main extends JFrame implements ActionListener {
 	JMenuItem check = new JMenuItem("Check");
 	JMenuItem show = new JMenuItem("Show");
 	JMenuItem about = new JMenuItem("About");
+	JMenuItem add = new JMenuItem("Add Clock Constraint");
+	JMenuItem combine = new JMenuItem("Add Clock Constraint");
+	JMenuItem createTxt = new JMenuItem("Export Relations");
 	DrawPane myDrawPane = new DrawPane();
 	InfoPane myInfoPane = new InfoPane();
 	public IntPane nowIntPane;
@@ -53,20 +57,6 @@ public class Main extends JFrame implements ActionListener {
 	DisplayPane myDisplayPane = new DisplayPane();
 	JSplitPane all = new JSplitPane();
 	JSplitPane rightp = new JSplitPane();
-	JToolBar toolbar = new JToolBar();
-	JToggleButton b_machine;
-	JToggleButton b_givendomain;
-	JToggleButton b_designeddomain;
-	JToggleButton b_requirement;
-	JToggleButton b_interface;
-	JToggleButton b_requirementconstraint;
-	JToggleButton b_requirementreference;
-	JToggleButton b_hong;
-	JToggleButton b_lan;
-	JToggleButton b_lv;
-	JToggleButton b_cheng;
-	JToggleButton b_zi;
-	JToggleButton b_cheng_y;
 	static Main win;
 	JFileChooser chooser;
 	String nameOfProject;
@@ -99,7 +89,6 @@ public class Main extends JFrame implements ActionListener {
 	}
 
 	private void clear() {
-		smooth();
 		this.intPane_l = new LinkedList();
 		this.subpd_l = new LinkedList();
 		errmes = "";
@@ -454,7 +443,6 @@ public class Main extends JFrame implements ActionListener {
 
 	public void setButtonState(int i) {
 		if (i == 0) {
-			buttonClear();
 			this.load.setEnabled(true);
 			this.news.setEnabled(true);
 			this.open.setEnabled(true);
@@ -467,7 +455,6 @@ public class Main extends JFrame implements ActionListener {
 			this.myDrawPane.jb1.setEnabled(true);
 		}
 		if (i == 1) {
-			buttonClear();
 			this.load.setEnabled(true);
 			this.news.setEnabled(true);
 			this.open.setEnabled(true);
@@ -488,7 +475,6 @@ public class Main extends JFrame implements ActionListener {
 			}
 		}
 		if (i == 2) {
-			buttonClear();
 			this.load.setEnabled(true);
 			this.news.setEnabled(true);
 			this.open.setEnabled(true);
@@ -508,7 +494,6 @@ public class Main extends JFrame implements ActionListener {
 			}
 		}
 		if (i == 3) {
-			buttonClear();
 			this.load.setEnabled(true);
 			this.news.setEnabled(true);
 			this.open.setEnabled(true);
@@ -528,28 +513,22 @@ public class Main extends JFrame implements ActionListener {
 			}
 		}
 		if ((i == 4) || (i == 5)) {
-			buttonClear();
 			this.load.setEnabled(true);
 			this.news.setEnabled(true);
 			this.open.setEnabled(true);
 			this.save.setEnabled(true);
 			this.check.setEnabled(true);
 			this.myDrawPane.jb1.setEnabled(true);
-			this.b_requirement.setEnabled(true);
 		}
 		if (i == 5) {
-			buttonClear();
 			this.load.setEnabled(true);
 			this.news.setEnabled(true);
 			this.open.setEnabled(true);
 			this.save.setEnabled(true);
 			this.check.setEnabled(true);
 			this.myDrawPane.jb1.setEnabled(true);
-			this.b_requirementconstraint.setEnabled(true);
-			this.b_requirementreference.setEnabled(true);
 		}
 		if (i == 6) {
-			buttonClear();
 			this.load.setEnabled(true);
 			this.news.setEnabled(true);
 			this.open.setEnabled(true);
@@ -558,13 +537,6 @@ public class Main extends JFrame implements ActionListener {
 			this.myDrawPane.jb1.setEnabled(true);
 		}
 		if (i == 7) {
-			buttonClear();
-			this.b_cheng.setEnabled(true);
-			this.b_cheng_y.setEnabled(true);
-			this.b_hong.setEnabled(true);
-			this.b_lan.setEnabled(true);
-			this.b_lv.setEnabled(true);
-			this.b_zi.setEnabled(true);
 			this.load.setEnabled(true);
 			this.news.setEnabled(true);
 			this.open.setEnabled(true);
@@ -574,7 +546,6 @@ public class Main extends JFrame implements ActionListener {
 
 		}
 		if (i == 8) {
-			buttonClear();
 			this.load.setEnabled(true);
 			this.news.setEnabled(true);
 			this.open.setEnabled(true);
@@ -583,128 +554,6 @@ public class Main extends JFrame implements ActionListener {
 			this.myDrawPane.jb1.setEnabled(true);
 
 		}
-	}
-
-	public void buttonClear() {
-		this.b_cheng.setEnabled(false);
-		this.b_cheng_y.setEnabled(false);
-		this.b_designeddomain.setEnabled(false);
-		this.b_givendomain.setEnabled(false);
-		this.b_hong.setEnabled(false);
-		this.b_interface.setEnabled(false);
-		this.b_lan.setEnabled(false);
-		this.b_lv.setEnabled(false);
-		this.b_machine.setEnabled(false);
-		this.b_requirement.setEnabled(false);
-		this.b_requirementconstraint.setEnabled(false);
-		this.b_requirementreference.setEnabled(false);
-		this.b_zi.setEnabled(false);
-	}
-
-	public void smooth() {
-		this.b_machine.setSelected(false);
-		this.b_givendomain.setSelected(false);
-		this.b_designeddomain.setSelected(false);
-		this.b_requirement.setSelected(false);
-		this.b_interface.setSelected(false);
-		this.b_requirementconstraint.setSelected(false);
-		this.b_requirementreference.setSelected(false);
-		this.b_lv.setSelected(false);
-		this.b_hong.setSelected(false);
-		this.b_cheng.setSelected(false);
-		this.b_zi.setSelected(false);
-		this.b_lan.setSelected(false);
-		this.b_cheng_y.setSelected(false);
-	}
-
-	private void toolBarInit() {
-		this.b_givendomain = new JToggleButton(new ImageIcon("./src/icons/rect.jpg"));//src/icons/rect.jpg
-		this.b_givendomain.addActionListener(this);
-		this.b_givendomain.setToolTipText("GivenDomain");
-		this.b_givendomain.setActionCommand("Draw_GivenDomain");
-
-		this.b_designeddomain = new JToggleButton(new ImageIcon(
-				"./src/icons/drect.jpg"));
-		this.b_designeddomain.addActionListener(this);
-		this.b_designeddomain.setToolTipText("DesignedDomain");
-		this.b_designeddomain.setActionCommand("Draw_DesignedDomain");
-
-		this.b_machine = new JToggleButton(new ImageIcon("./src/icons/machine.jpg"));
-		this.b_machine.addActionListener(this);
-		this.b_machine.setToolTipText("Machine");
-		this.b_machine.setActionCommand("Draw_Machine");
-
-		this.b_requirement = new JToggleButton(new ImageIcon("./src/icons/r.jpg"));
-		this.b_requirement.addActionListener(this);
-		this.b_requirement.setToolTipText("Requirement");
-		this.b_requirement.setActionCommand("Draw_Requirement");
-
-		this.b_interface = new JToggleButton(new ImageIcon("./src/icons/i.jpg"));
-		this.b_interface.addActionListener(this);
-		this.b_interface.setToolTipText("Interface");
-		this.b_interface.setActionCommand("Draw_Interface");
-
-		this.b_requirementconstraint = new JToggleButton(new ImageIcon(
-				"./src/icons/rc.jpg"));
-		this.b_requirementconstraint.addActionListener(this);
-		this.b_requirementconstraint.setToolTipText("RequirementConstraint");
-		this.b_requirementconstraint
-				.setActionCommand("Draw_RequirementConstraint");
-
-		this.b_requirementreference = new JToggleButton(new ImageIcon(
-				"./src/icons/rr.jpg"));
-		this.b_requirementreference.addActionListener(this);
-		this.b_requirementreference.setToolTipText("RequirementReference");
-		this.b_requirementreference
-				.setActionCommand("Draw_RequirementReference");
-
-		this.b_hong = new JToggleButton(new ImageIcon("./src/icons/hong.jpg"));
-		this.b_hong.addActionListener(this);
-		this.b_hong.setActionCommand("Hong");
-		this.b_hong.setToolTipText("behEna");
-
-		this.b_lan = new JToggleButton(new ImageIcon("./src/icons/lan.jpg"));
-		this.b_lan.addActionListener(this);
-		this.b_lan.setActionCommand("Lan");
-		this.b_lan.setToolTipText("behOrd");
-
-		this.b_lv = new JToggleButton(new ImageIcon("./src/icons/lv.jpg"));
-		this.b_lv.addActionListener(this);
-		this.b_lv.setActionCommand("Lv");
-		this.b_lv.setToolTipText("synchrocity");
-
-		this.b_cheng = new JToggleButton(new ImageIcon("./src/icons/cheng.jpg"));
-		this.b_cheng.addActionListener(this);
-		this.b_cheng.setActionCommand("Cheng");
-		this.b_cheng.setToolTipText("expOrd");
-
-		this.b_zi = new JToggleButton(new ImageIcon("./src/icons/zi.jpg"));
-		this.b_zi.addActionListener(this);
-		this.b_zi.setActionCommand("Zi");
-		this.b_zi.setToolTipText("reqEna");
-
-		this.b_cheng_y = new JToggleButton(new ImageIcon("./src/icons/y_cheng.jpg"));
-		this.b_cheng_y.addActionListener(this);
-		this.b_cheng_y.setActionCommand("Cheng_y");
-		this.b_cheng_y.setToolTipText("Int");
-
-		this.toolbar.add(this.b_givendomain);
-		this.toolbar.add(this.b_designeddomain);
-		this.toolbar.add(this.b_machine);
-		this.toolbar.add(this.b_requirement);
-		this.toolbar.add(this.b_interface);
-		this.toolbar.add(this.b_requirementreference);
-		this.toolbar.add(this.b_requirementconstraint);
-		this.toolbar.addSeparator();
-		this.toolbar.add(this.b_hong);
-		this.toolbar.add(this.b_lan);
-		this.toolbar.add(this.b_lv);
-		this.toolbar.add(this.b_cheng);
-		this.toolbar.add(this.b_zi);
-		this.toolbar.add(this.b_cheng_y);
-		this.toolbar.setFloatable(false);
-		this.toolbar.setOrientation(0);
-		getContentPane().add(this.toolbar, "North");
 	}
 
 	public Main() {
@@ -716,6 +565,7 @@ public class Main extends JFrame implements ActionListener {
 		this.menuBar.add(this.file);
 		this.menuBar.add(this.ontology);
 		this.menuBar.add(this.help);
+		this.menuBar.add(this.constraint);
 		this.ontology.add(this.load);
 		this.ontology.add(this.show);
 		this.ontology.add(this.check);
@@ -724,6 +574,9 @@ public class Main extends JFrame implements ActionListener {
 		this.file.add(this.save);
 		this.file.add(this.exit);
 		this.help.add(this.about);
+		this.constraint.add(this.add);
+		this.constraint.add(this.combine);
+		this.constraint.add(this.createTxt);
 		this.news.addActionListener(this);
 		this.open.addActionListener(this);
 		this.save.addActionListener(this);
@@ -732,6 +585,9 @@ public class Main extends JFrame implements ActionListener {
 		this.exit.addActionListener(this);
 		this.about.addActionListener(this);
 		this.show.addActionListener(this);
+		this.add.addActionListener(this);
+		this.combine.addActionListener(this);
+		this.createTxt.addActionListener(this);
 		this.clockDiagrams = new ClockDiagram[100];
 		this.subProblemDiagrams = new Diagram[100];
 		this.show.setEnabled(false);
@@ -759,7 +615,6 @@ public class Main extends JFrame implements ActionListener {
 		this.rightp.setLeftComponent(this.myDisplayPane);
 		this.rightp.setRightComponent(this.myInfoPane);
 		getContentPane().add(this.all);
-		toolBarInit();
 		setButtonState(0);
 	}
 }

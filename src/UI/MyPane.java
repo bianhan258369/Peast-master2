@@ -218,7 +218,6 @@ public class MyPane extends FatherPane implements MouseMotionListener,
 			tmpr.setText(Data.GD_TEXT);
 			this.dd.add(tmpr);
 			setState(0);
-			Main.win.smooth();
 			Main.win.repaint();
 			return;
 		}
@@ -228,7 +227,6 @@ public class MyPane extends FatherPane implements MouseMotionListener,
 			tmpr.setText(Data.DD_TEXT);
 			this.dd.add(tmpr);
 			setState(0);
-			Main.win.smooth();
 			Main.win.repaint();
 			return;
 		}
@@ -238,7 +236,6 @@ public class MyPane extends FatherPane implements MouseMotionListener,
 			tmpr.setText(Data.M_TEXT);
 			this.dd.add(tmpr);
 			setState(0);
-			Main.win.smooth();
 			Main.win.repaint();
 			return;
 		}
@@ -247,7 +244,6 @@ public class MyPane extends FatherPane implements MouseMotionListener,
 			Oval tmp_o = new Oval(e.getX(), e.getY());
 			this.dd.add(tmp_o);
 			setState(0);
-			Main.win.smooth();
 			Main.win.repaint();
 			Main.win.myInfoPane.setDescription(this.dd
 					.getInteractionDescription());
@@ -267,7 +263,6 @@ public class MyPane extends FatherPane implements MouseMotionListener,
 			}
 			this.from = null;
 			setState(0);
-			Main.win.smooth();
 			Main.win.repaint();
 		} else {
 			if (this.nowSelected != null) {
@@ -288,7 +283,6 @@ public class MyPane extends FatherPane implements MouseMotionListener,
 					setState(0);
 					Main.win.repaint();
 					this.from = null;
-					Main.win.smooth();
 				}
 				Main.win.myInfoPane.setDescription(this.dd
 						.getInteractionDescription());

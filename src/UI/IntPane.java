@@ -209,11 +209,6 @@
            FatherPane kk = Main.win.myDisplayPane.getMyPane("ProblemDiagram");
            if (kk != null) {
              Main.win.myDisplayPane.setSelected(kk);
-             Main.win.b_givendomain.setEnabled(true);
-             Main.win.b_interface.setEnabled(true);
-             Main.win.b_requirement.setEnabled(true);
-             Main.win.b_requirementconstraint.setEnabled(true);
-             Main.win.b_requirementreference.setEnabled(true);
            }
          }
        }
@@ -277,7 +272,6 @@
        this.dd.addJiaohu(jh1);
        setHua(0);
        repaint();
-       Main.win.smooth();
        return;
      }
  
@@ -305,7 +299,6 @@
          this.from = null;
          this.dian = new LinkedList();
          setLeixing(-1);
-         Main.win.smooth();
          return;
        }
  
