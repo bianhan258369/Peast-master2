@@ -106,6 +106,7 @@ public class Diagram implements Serializable {
 					int y2 = Integer.parseInt(locality[3]);
 					Rect rect = new Rect(x1 + x2 / 2, y1 + y2 / 2);
 					rect.setText(temp.attributeValue("problemdomain_name"));
+					//System.out.println(rect.getText());
 					rect.setShortName(temp.attributeValue("problemdomain_shortname"));
 					rect.setState(Integer.parseInt(temp.attributeValue("problemdomain_state")));
 					rect.setCxb(temp.attributeValue("problemdomain_cxb").charAt(0));

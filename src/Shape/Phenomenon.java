@@ -66,8 +66,13 @@
    public boolean equals(Object obj) {
      if(obj instanceof Phenomenon){
        Phenomenon temp = (Phenomenon)obj;
-       return this.getBiaohao() == temp.getBiaohao() && this.getName().equals(temp.getName());
+       return this.getBiaohao() == temp.getBiaohao();
      }
      return false;
+   }
+
+   @Override
+   public int hashCode() {
+     return name.hashCode() * 31;
    }
  }

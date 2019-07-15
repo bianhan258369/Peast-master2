@@ -89,4 +89,18 @@
      setSize(this.x1 + this.x2 / 2, this.y1 + this.y2 / 2);
      this.des = 1;
    }
+
+   @Override
+   public boolean equals(Object obj) {
+     if(obj instanceof Oval){
+       Oval temp = (Oval)obj;
+       return temp.getText().equals(this.getText());
+     }
+     return false;
+   }
+
+   @Override
+   public int hashCode() {
+     return getText().hashCode() * 31;
+   }
  }

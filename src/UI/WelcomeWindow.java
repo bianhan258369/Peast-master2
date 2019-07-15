@@ -128,7 +128,7 @@ public class WelcomeWindow {
 						Main.win.myDrawPane.event_load();
 						Main.win.show.setEnabled(true);
 						lblMessage.setText("Check ontology...");
-						Main.win.myDrawPane.event_check();
+						//Main.win.myDrawPane.event_check();
 						shell.dispose();
 					}
 				});

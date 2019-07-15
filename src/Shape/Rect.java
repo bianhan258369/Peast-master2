@@ -103,8 +103,14 @@ public class Rect extends Shape {
 	public boolean equals(Object obj) {
 		if(obj instanceof Rect){
 			Rect temp = (Rect)obj;
-			return (this.getText() == temp.getText() && this.getState() == temp.getState());
+			return (this.getText().equals(temp.getText()) && this.getState() == temp.getState());
 		}
 		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = getText().hashCode() * 31 + state;
+		return result;
 	}
 }

@@ -58,7 +58,6 @@ public class ClockDiagram extends Diagram {
 
 			if (tmp.shape == 0) {
 				Rect tmpRect = (Rect) tmp;
-
 				tmp.draw(g);
 
 				if (tmpRect.selected) {

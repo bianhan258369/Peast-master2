@@ -2,6 +2,8 @@ package UI;
 
 import Shape.*;
 import Shape.Shape;
+import com.hp.hpl.jena.ontology.*;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.sun.xml.internal.bind.v2.runtime.output.NamespaceContextImpl;
 import jdk.internal.util.xml.XMLStreamException;
 import org.dom4j.Document;
@@ -9,6 +11,8 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
+import sun.awt.image.ImageWatched;
+import util.OWLFileFilter;
 import util.XMLFileFilter;
 
 import javax.swing.*;
@@ -19,12 +23,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
 
 public class Main extends JFrame implements ActionListener {
 	public static String errmes = "";
 	public static int errstate = 0;// 0û���� 1�ߴ��� 2���󽻻�����
+	private int buttonState;
 	JMenuBar menuBar = new JMenuBar();
 	JMenu file = new JMenu("File");
 	JMenu help = new JMenu("Help");
@@ -39,7 +43,7 @@ public class Main extends JFrame implements ActionListener {
 	JMenuItem show = new JMenuItem("Show");
 	JMenuItem about = new JMenuItem("About");
 	JMenuItem add = new JMenuItem("Add Clock Constraint");
-	JMenuItem combine = new JMenuItem("Add Clock Constraint");
+	JMenuItem combine = new JMenuItem("Combine Clock");
 	JMenuItem createTxt = new JMenuItem("Export Relations");
 	DrawPane myDrawPane = new DrawPane();
 	InfoPane myInfoPane = new InfoPane();
@@ -86,6 +90,7 @@ public class Main extends JFrame implements ActionListener {
 		win.setVisible(true);
 		win.setExtendedState(6);
 		win.addWindowListener(new MyAdapter(win));
+		win.constraint.setEnabled(false);
 	}
 
 	private void clear() {
@@ -414,14 +419,106 @@ public class Main extends JFrame implements ActionListener {
 		}
     }
 
+    public void loadOWLFile() throws FileNotFoundException {
+		Map<String, Rect> domains = new HashMap<>();
+		Map<String, Phenomenon> phenomena = new HashMap<>();
+		LinkedList<StateMachine> stateMachines = new LinkedList<>();
+		JFileChooser jFileChooser = new JFileChooser();
+		jFileChooser.setDialogTitle("Load Ontology File");
+		jFileChooser.addChoosableFileFilter(new OWLFileFilter());
+		jFileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		jFileChooser.showDialog(null,null);
+		File file = jFileChooser.getSelectedFile();
+		for(int i = 0;i < myIntDiagram.size();i++){
+			Diagram diagram = subProblemDiagrams[i];
+			IntDiagram intDiagram = myIntDiagram.get(i);
+			for(int j = 0;j < diagram.getProblemDomains().size();j++){
+				domains.put(((Rect) diagram.getProblemDomains().get(j)).getText(),(Rect) diagram.getProblemDomains().get(j));
+			}
+			for(int j = 0;j < diagram.getPhenomenon().size();j++){
+				phenomena.put(((Phenomenon) diagram.getPhenomenon().get(j)).getName(),(Phenomenon) diagram.getPhenomenon().get(j));
+			}
+		}
+		if(!file.exists()) JOptionPane.showMessageDialog(null,"this file does not exist!","Error",JOptionPane.ERROR_MESSAGE);
+		OntModel ontModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
+		ontModel.read(new FileInputStream(file.getPath()), "");
+		for(Iterator i = ontModel.listClasses();i.hasNext();){
+			OntClass c = (OntClass) i.next();
+			if (!c.isAnon()) {
+				String name = c.getModel().getGraph().getPrefixMapping().shortForm(c.getURI());
+				if (name.startsWith(":trans")) {
+					StateMachine stateMachine = new StateMachine();
+					System.out.println(name + " : ");
+					for (Iterator it = c.listSuperClasses(); it.hasNext(); ) {
+						OntClass sup = (OntClass) it.next();
+						Iterator ipp = sup.listDeclaredProperties();
+						String from = null;
+						String to = null;
+						if (sup.isRestriction()) {
+							Restriction r = sup.asRestriction();
+							OntProperty p = r.getOnProperty();
+							//System.out.println(p.getLocalName());
+							if (r.isAllValuesFromRestriction()) {
+								AllValuesFromRestriction avf = r.asAllValuesFromRestriction();
+								//System.out.println(avf.getAllValuesFrom().getLocalName());
+								if(p.getLocalName().equals("trigger")){
+									stateMachine.setTrans(avf.getAllValuesFrom().getLocalName());
+								}
+								else if(p.getLocalName().equals("sink_to")){
+									stateMachine.setTo(avf.getAllValuesFrom().getLocalName());
+								}
+								else if(p.getLocalName().equals("source_from")){
+									stateMachine.setFrom(avf.getAllValuesFrom().getLocalName());
+								}
+							}
+						}
+					}
+					stateMachines.add(stateMachine);
+				}
+			}
+		}
+		//Set set = phenomena.keySet();
+		//for(Object s : set) System.out.println(s.toString());
+		for(int i = 0;i < stateMachines.size();i++) System.out.println(stateMachines.get(i).toString());
+		for(int i = 0;i < stateMachines.size() - 1;i++){
+			for(int j = i + 1;j < stateMachines.size();j++){
+				StateMachine temp1 = stateMachines.get(i);
+				StateMachine temp2 = stateMachines.get(j);
+				if(temp1.isAlternate(temp2)){
+					if(phenomena.containsKey(temp1.getFrom()) && phenomena.containsKey(temp1.getTo())){
+						int from = phenomena.get(temp1.getFrom()).getBiaohao();
+						int to = phenomena.get(temp1.getTo()).getBiaohao();
+						for(int k = 0;k < Main.win.myIntDiagram.size();k++){
+							if(Main.win.subProblemDiagrams[k].getPhenomenon().contains(phenomena.get(temp1.getFrom())) && Main.win.subProblemDiagrams[k].getPhenomenon().contains(phenomena.get(temp1.getTo()))){
+								Main.win.instantPanes.get(k).addConstraint("int" + from, "Alternate","int" + to,null);
+							}
+						}
+					}
+
+					if(phenomena.containsKey(temp1.getTrans()) && phenomena.containsKey(temp2.getTrans())){
+						int from = phenomena.get(temp1.getTrans()).getBiaohao();
+						int to = phenomena.get(temp2.getTrans()).getBiaohao();
+						for(int k = 0;k < Main.win.myIntDiagram.size();k++){
+							if(Main.win.subProblemDiagrams[k].getPhenomenon().contains(phenomena.get(temp1.getTrans())) && Main.win.subProblemDiagrams[k].getPhenomenon().contains(phenomena.get(temp2.getTrans()))){
+								Main.win.instantPanes.get(k).addConstraint("int" + from,  "Alternate","int" + to,null);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 
 
 	@SuppressWarnings("deprecation")
 	public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("Open")){
 			try {
-				loadProjectXML();
+				if(buttonState == 0)loadProjectXML();
+				if(buttonState == 1)loadOWLFile();
 			} catch (DocumentException e1) {
+				e1.printStackTrace();
+			} catch (FileNotFoundException e1) {
 				e1.printStackTrace();
 			}
 		}
@@ -439,10 +536,23 @@ public class Main extends JFrame implements ActionListener {
 			String s = "tool to show clock specification";
 			JOptionPane.showMessageDialog(this, s, "About PFTool", 1);
 		}
+		if (e.getActionCommand().equals("Add Clock Constraint")){
+        	instantPane.addClockConstraint();
+		}
+		if (e.getActionCommand().equals("Combine Clock")){
+			instantPane.ClockConstruction();
+		}
+		if (e.getActionCommand().equals("Export Relations")){
+			instantPane.createRelations();
+		}
 	}
 
+
+
 	public void setButtonState(int i) {
+		buttonState = i;
 		if (i == 0) {
+			constraint.setEnabled(false);
 			this.load.setEnabled(true);
 			this.news.setEnabled(true);
 			this.open.setEnabled(true);
@@ -473,6 +583,7 @@ public class Main extends JFrame implements ActionListener {
 				instantPanes.get(i).combineBut.setEnabled(false);
 				instantPanes.get(i).createTxtBut.setEnabled(false);
 			}
+			constraint.setEnabled(false);
 		}
 		if (i == 2) {
 			this.load.setEnabled(true);
@@ -492,6 +603,7 @@ public class Main extends JFrame implements ActionListener {
 				instantPanes.get(i).combineBut.setEnabled(true);
 				instantPanes.get(i).createTxtBut.setEnabled(true);
 			}
+			constraint.setEnabled(true);
 		}
 		if (i == 3) {
 			this.load.setEnabled(true);
@@ -511,6 +623,7 @@ public class Main extends JFrame implements ActionListener {
 				instantPanes.get(i).combineBut.setEnabled(false);
 				instantPanes.get(i).createTxtBut.setEnabled(false);
 			}
+			constraint.setEnabled(false);
 		}
 		if ((i == 4) || (i == 5)) {
 			this.load.setEnabled(true);
@@ -557,15 +670,16 @@ public class Main extends JFrame implements ActionListener {
 	}
 
 	public Main() {
-		super(
-				"A Tool For Generating Clock Specification And Timing Diagram");
-
+		super("A Tool For Generating Clock Specification And Timing Diagram");
 		this.chooser = new JFileChooser();
 		setJMenuBar(this.menuBar);
 		this.menuBar.add(this.file);
 		this.menuBar.add(this.ontology);
 		this.menuBar.add(this.help);
 		this.menuBar.add(this.constraint);
+		this.constraint.add(this.add);
+		this.constraint.add(this.combine);
+		this.constraint.add(this.createTxt);
 		this.ontology.add(this.load);
 		this.ontology.add(this.show);
 		this.ontology.add(this.check);
@@ -574,9 +688,6 @@ public class Main extends JFrame implements ActionListener {
 		this.file.add(this.save);
 		this.file.add(this.exit);
 		this.help.add(this.about);
-		this.constraint.add(this.add);
-		this.constraint.add(this.combine);
-		this.constraint.add(this.createTxt);
 		this.news.addActionListener(this);
 		this.open.addActionListener(this);
 		this.save.addActionListener(this);
@@ -611,7 +722,7 @@ public class Main extends JFrame implements ActionListener {
 		double height = d.getHeight();
 
 		this.all.setDividerLocation((int) (width / 8.0D));
-		this.rightp.setDividerLocation((int) (5.0D * width / 7.0D));
+		this.rightp.setDividerLocation((int) (4.5D * width / 7.0D));
 		this.rightp.setLeftComponent(this.myDisplayPane);
 		this.rightp.setRightComponent(this.myInfoPane);
 		getContentPane().add(this.all);

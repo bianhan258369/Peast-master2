@@ -61,7 +61,6 @@ public class InstantGraph implements Serializable {
 		originX = 20;
 		originY = 60;
 		length = 800;
-
 		this.clock = clock;
 		this.domain = domain;
 		this.problemDiagram = Main.win.myProblemDiagram;

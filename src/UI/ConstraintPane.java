@@ -16,16 +16,16 @@ import javax.swing.border.TitledBorder;
 
 public class ConstraintPane extends JPanel {
 	/*
-	 * Ê¾Àý£¬½«ËùÔÚµÄPaneÉèÖÃÎªBorderLayout this.setLayout(new BorderLayout());
-	 * ConstraintPane south=new ConstraintPane(); È»ºó½«Õâ¸öPane¼Óµ½ËüµÄÏÂ·½
-	 * this.add(south,BorderLayout.SOUTH); Ìí¼Óµ÷ÓÃº¯Êý
-	 * south.addConstraint("x1>x2");²ÎÊýÀàÐÍString
+	 * Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½Paneï¿½ï¿½ï¿½ï¿½ÎªBorderLayout this.setLayout(new BorderLayout());
+	 * ConstraintPane south=new ConstraintPane(); È»ï¿½ï¿½ï¿½ï¿½ï¿½Paneï¿½Óµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½
+	 * this.add(south,BorderLayout.SOUTH); ï¿½ï¿½Óµï¿½ï¿½Ãºï¿½ï¿½ï¿½
+	 * south.addConstraint("x1>x2");ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½String
 	 */
 	public ArrayList<String> relationString = new ArrayList<>();
 	private ArrayList<JLabel> labellist = new ArrayList<JLabel>();
 	private ArrayList<JButton> buttonlist = new ArrayList<JButton>();
 	private final int PANEWIDTH = 210;
-	private final int PANEHEIGHT = 140;
+	private final int PANEHEIGHT = 700;
 	JPanel relation = null;
 
 	ConstraintPane() {
@@ -48,11 +48,11 @@ public class ConstraintPane extends JPanel {
 
 	public void addConstraint(String from, String cons, String to, String num) {
 		/*
-		 * Ôö¼Ó´¥·¢µÄº¯Êý£¬Òª¼Ó´úÂëÔÚÕâÀï¼Ó
+		 * ï¿½ï¿½ï¿½Ó´ï¿½ï¿½ï¿½ï¿½Äºï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½Ó´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		 */
 		String constraint;
         if(Main.win.instantPane.constraintRelations.get(cons) == 0){
-            if(num.trim() != "" && num != null) constraint = from + " " + cons + " " + num + " " +  to ;
+            if(num != null && num.trim() != "") constraint = from + " " + cons + " " + num + " " +  to ;
             else constraint = from + " " + cons + " " + to;
             relationString.add(constraint);
         }
@@ -76,7 +76,7 @@ public class ConstraintPane extends JPanel {
 		// ImageIcon(Main.class.getResource("/image/delete.png"));
 		// button.setIcon(icon);
 		button.setBounds(340, size * 25 + 10, 50, 21);
-		button.setContentAreaFilled(false); // ÉèÖÃJButtonÍ¸Ã÷
+		button.setContentAreaFilled(false); // ï¿½ï¿½ï¿½ï¿½JButtonÍ¸ï¿½ï¿½
         String finalConstraint = constraint;
         button.addActionListener(new ActionListener() {
 
@@ -125,7 +125,7 @@ public class ConstraintPane extends JPanel {
 
 	public void conrepaint() {
 		/*
-		 * É¾³ý´¥·¢µÄº¯Êý£¬Òª¼Ó´úÂëÔÚÕâÀï¼Ó
+		 * É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Äºï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½Ó´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		 */
 
 		relation.removeAll();

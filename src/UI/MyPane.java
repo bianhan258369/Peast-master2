@@ -87,8 +87,7 @@ public class MyPane extends FatherPane implements MouseMotionListener,
 					"Succed to be fitted to " + name + "!", "Tip", 0, 1, null,
 					bs, null);
 
-			Main.win.myInfoPane.setDescription(this.dd
-					.getInteractionDescription());
+			//Main.win.myInfoPane.setDescription(this.dd.getInteractionDescription());
 		} else {
 			Object[] bs = { "OK" };
 

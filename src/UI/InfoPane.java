@@ -28,7 +28,8 @@
    JSplitPane js = new JSplitPane();
    BorderLayout bl = new BorderLayout();
    JScrollPane jt_qian = new JScrollPane();
-   JTextArea jt = new JTextArea();
+   //JTextArea jta = new JTextArea();
+   JPanel jt = new JPanel();
    JTabbedPane desk = new JTabbedPane();
    JScrollPane treePane;
    JTree tree;
@@ -180,7 +181,13 @@
  
    public void setDescription(String s)
    {
-     this.jt.setText(s);
+
+   }
+
+   public void setDescription(JPanel jPanel)
+   {
+     this.jt.removeAll();
+     this.jt.add(jPanel);
    }
  
    public void treeInit() {
@@ -288,13 +295,13 @@
      Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
      double width = d.getWidth();
      double height = d.getHeight();
-     this.js.setDividerLocation((int)(2.0D * height / 5.0D));
+     this.js.setDividerLocation((int)(3.0D * height / 5.0D));
      this.jt_qian = new JScrollPane(this.jt);
      this.jt_qian.add(this.jt);
      this.jt_qian.setViewportView(this.jt);
      this.js.setBottomComponent(this.jt_qian);
      this.js.setTopComponent(this.desk);
-     this.jt.setEditable(false);
+     //this.jt.setEditable(false);
      add(this.js, "Center");
      this.desk.addChangeListener(this);
    }

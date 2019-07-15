@@ -81,7 +81,7 @@
        if(tmp_mp instanceof InstantPane){
            String s = ((InstantPane)tmp_mp).getTitle();
            int index = Integer.parseInt(s.substring(2, s.indexOf(":")));
-           Main.win.myInfoPane.setDescription(Main.win.subProblemDiagrams[index - 1].getInteractionDescription());
+           Main.win.myInfoPane.setDescription(Main.win.instantPanes.get(index - 1).south);
        }
        /********************************************************************/
  

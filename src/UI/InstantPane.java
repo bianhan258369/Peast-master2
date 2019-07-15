@@ -57,14 +57,14 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 	JPopupMenu popupMenu = new JPopupMenu();
 
 	Font font = new Font("Arial", Font.PLAIN, 15);
-	JPanel buttonPanel = new JPanel();
+	//JPanel buttonPanel = new JPanel();
 	JPanel buttonAndConstrainPanel = new JPanel();
 	JButton addBut = new JButton("Add Clock Constraint");
     JButton combineBut = new JButton("Clock Construction");
     JButton createTxtBut = new JButton("Export Relations");
 
 
-	ConstraintPane south = new ConstraintPane();
+	static ConstraintPane south = new ConstraintPane();
 
 	private boolean isDraw = false;
 
@@ -80,25 +80,25 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 		this.setLayout(new BorderLayout(5,5));
 		//this.add(south, BorderLayout.SOUTH);
 		buttonAndConstrainPanel.setLayout(new BorderLayout());
-		buttonPanel.setLayout(new GridLayout(3,1));
-		buttonPanel.setPreferredSize(new Dimension(200,30));
-		addBut.setFont(font);
-		combineBut.setFont(font);
-		createTxtBut.setFont(font);
-		buttonPanel.add(addBut);
-		buttonPanel.add(combineBut);
-		buttonPanel.add(createTxtBut);
-		buttonAndConstrainPanel.add("Center",south);
-		buttonAndConstrainPanel.add("West", buttonPanel);
+		//buttonPanel.setLayout(new GridLayout(3,1));
+		//buttonPanel.setPreferredSize(new Dimension(200,30));
+		//addBut.setFont(font);
+		//combineBut.setFont(font);
+		//createTxtBut.setFont(font);
+		//buttonPanel.add(addBut);
+		//buttonPanel.add(combineBut);
+		//buttonPanel.add(createTxtBut);
+		//buttonAndConstrainPanel.add("Center",south);
+		//buttonAndConstrainPanel.add("West", buttonPanel);
 		this.add("South", buttonAndConstrainPanel);
-		addBut.addActionListener(this);
-		combineBut.addActionListener(this);
-		createTxtBut.addActionListener(this);
+		//addBut.addActionListener(this);
+		//combineBut.addActionListener(this);
+		//createTxtBut.addActionListener(this);
 		addMouseListener(this);
 		addMouseMotionListener(this);
-		addBut.setEnabled(false);
-		combineBut.setEnabled(false);
-		createTxtBut.setEnabled(false);
+		//addBut.setEnabled(false);
+		//combineBut.setEnabled(false);
+		//createTxtBut.setEnabled(false);
 	}
 
 	/*
@@ -296,11 +296,11 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 				    jiaohu.draw(g,color);
                 }
                 g.setColor(Color.black);
-                Font font1 = new Font("SansSerif", 0, 9);
+                Font font1 = new Font("SansSerif", 0, 12);
 				g.setFont(font1);
-				g.drawString(ig.getDomain().getShortName() + ":",30,30+10 * i);
+				g.drawString(ig.getDomain().getShortName() + ":",30,30+20 * i);
 				g.setColor(color);
-				g.fillOval(50,20 + 10 * i,10,10);
+				g.fillRect(70,18 + 20 * i,30,15);
 			}
 			for(int i = 0;i < igs.get(0).getIntDiagram().getChangjing().size();i++){
 			    Changjing changjing = (Changjing) igs.get(0).getIntDiagram().getChangjing().get(i);
@@ -399,11 +399,33 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 	public static void main(String[] args) {
 	}
 
+	public void addClockConstraint(){
+        constraintDialog = new ConstraintDialog(this.igs);
+    }
+
+    public void ClockConstruction(){
+        LinkedList<String> clocks = new LinkedList<String>();
+        for (int j = 0; j < igs.size(); j++) {
+            Rect domain = igs.get(j).getDomain();
+            if (null != domain)
+                clocks.add(domain.getShortName());
+        }
+        new CConstructionDialog(clocks);
+    }
+
+    public void createRelations(){
+        try {
+            createTxtFile();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+    }
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if (e.getActionCommand().equals("Add Clock Constraint")) {
-			constraintDialog = new ConstraintDialog(this.igs);
+            addClockConstraint();
 		} else if (e.getActionCommand().equals("Coincidence")) {
 			System.out.println("Coincidence");
 			this.setDraw(true);
@@ -417,12 +439,7 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 			this.setDraw(true);
 			relation = 2;
 		} else if (e.getActionCommand().equals("Add Clock Constraint")) {
-			System.out.println("Add Clock Constraint");
-			LinkedList<Clock> clocks = new LinkedList<Clock>();
-			for (int i = 0; i < this.igs.size(); i++) {
-				clocks.add(this.igs.get(i).getClock());
-			}
-			new ClockConsDialog(this.igs);
+            ClockConstruction();
 		} else if (e.getActionCommand().equals("Clock Construction")) {
 			LinkedList<String> clocks = new LinkedList<String>();
 			for (int j = 0; j < igs.size(); j++) {
@@ -436,11 +453,7 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 			checker.check();
 		}
 		else if(e.getActionCommand().equals("Export Relations")){
-			try {
-				createTxtFile();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
+            createRelations();
 		}
 	}
 

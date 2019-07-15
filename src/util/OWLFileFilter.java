@@ -1,0 +1,16 @@
+package util;
+
+import javax.swing.filechooser.FileFilter;
+import java.io.File;
+
+public class OWLFileFilter extends FileFilter {
+    @Override
+    public boolean accept(File f) {
+        return f.isDirectory() || f.getName().endsWith("owl");
+    }
+
+    @Override
+    public String getDescription() {
+        return "(*.owl)";
+    }
+}
