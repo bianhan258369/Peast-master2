@@ -448,7 +448,6 @@ public class Main extends JFrame implements ActionListener {
 				String name = c.getModel().getGraph().getPrefixMapping().shortForm(c.getURI());
 				if (name.startsWith(":trans")) {
 					StateMachine stateMachine = new StateMachine();
-					System.out.println(name + " : ");
 					for (Iterator it = c.listSuperClasses(); it.hasNext(); ) {
 						OntClass sup = (OntClass) it.next();
 						Iterator ipp = sup.listDeclaredProperties();
@@ -457,10 +456,8 @@ public class Main extends JFrame implements ActionListener {
 						if (sup.isRestriction()) {
 							Restriction r = sup.asRestriction();
 							OntProperty p = r.getOnProperty();
-							//System.out.println(p.getLocalName());
 							if (r.isAllValuesFromRestriction()) {
 								AllValuesFromRestriction avf = r.asAllValuesFromRestriction();
-								//System.out.println(avf.getAllValuesFrom().getLocalName());
 								if(p.getLocalName().equals("trigger")){
 									stateMachine.setTrans(avf.getAllValuesFrom().getLocalName());
 								}

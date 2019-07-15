@@ -43,8 +43,6 @@ public class WelcomeWindow {
 
 	/**
 	 * Configure shell
-	 * 
-	 * @param shell
 	 */
 	protected void configureShell() {
 		shell.pack();
@@ -64,7 +62,7 @@ public class WelcomeWindow {
 		shell.setLayout(new FillLayout());
 		// Composite as container
 		Composite container = new Composite(shell, SWT.NONE);
-		Image pic = new Image(shell.getDisplay(), "1.jpg");
+		Image pic = new Image(shell.getDisplay(), "RE4CPS.jpg");
 		container.setBackgroundImage(pic);
 		container.setBackgroundMode(SWT.INHERIT_DEFAULT);
 		FormLayout layout = new FormLayout();
