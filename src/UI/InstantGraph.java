@@ -56,6 +56,10 @@ public class InstantGraph implements Serializable {
 		colors.add(new Colour(255,215,0));
 	}
 
+	public LinkedList<Phenomenon> getPhenomenons() {
+		return phenomenons;
+	}
+
 	public InstantGraph(Rect domain, Clock clock) {
 
 		originX = 20;

@@ -286,6 +286,7 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 	public void paint(Graphics g) {
 		super.paint(g);
 		Arrow arrow = new Arrow();
+		Font font1 = new Font("SansSerif", 0, 12);
 		if (this.igs != null) {
 			for (int i = 0; i < igs.size(); i++) {
 				InstantGraph ig = igs.get(i);
@@ -294,10 +295,21 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 				for(int j = 0;j < ig.getJiaohu().size();j++){
 				    Jiaohu jiaohu = ig.getJiaohu().get(j);
 				    jiaohu.draw(g,color);
+				    int number = jiaohu.getNumber();
+				    String text = null;
+				    for(int k = 0;k < ig.getPhenomenons().size();k++){
+				    	Phenomenon phenomenon = ig.getPhenomenons().get(k);
+				    	if(phenomenon.getBiaohao() == number){
+				    		text = phenomenon.getName();
+				    		break;
+						}
+					}
+					g.setFont(font1);
+					g.drawString(text, jiaohu.getMiddleX() + 20,jiaohu.getMiddleY() - 15);
                 }
                 g.setColor(Color.black);
-                Font font1 = new Font("SansSerif", 0, 12);
-				g.setFont(font1);
+                Font font2 = new Font("SansSerif", 0, 12);
+				g.setFont(font2);
 				g.drawString(ig.getDomain().getShortName() + ":",30,30+20 * i);
 				g.setColor(color);
 				g.fillRect(70,18 + 20 * i,30,15);

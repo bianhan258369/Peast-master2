@@ -157,4 +157,5 @@ public class Jiaohu implements Serializable, Comparable<Jiaohu>,Cloneable {
 	public Object clone() throws CloneNotSupportedException {
 		return (Jiaohu)super.clone();
 	}
+
 }

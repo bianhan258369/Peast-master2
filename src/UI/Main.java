@@ -445,8 +445,15 @@ public class Main extends JFrame implements ActionListener {
 		for(Iterator i = ontModel.listClasses();i.hasNext();){
 			OntClass c = (OntClass) i.next();
 			if (!c.isAnon()) {
-				String name = c.getModel().getGraph().getPrefixMapping().shortForm(c.getURI());
-				if (name.startsWith(":trans")) {
+				boolean isTrans = false;
+				for (Iterator it = c.listSuperClasses(); it.hasNext(); ){
+					OntClass sup = (OntClass) it.next();
+					if(sup.getLocalName()!=null && sup.getLocalName().equals("Transition")){
+						isTrans = true;
+						break;
+					}
+				}
+				if (isTrans) {
 					StateMachine stateMachine = new StateMachine();
 					for (Iterator it = c.listSuperClasses(); it.hasNext(); ) {
 						OntClass sup = (OntClass) it.next();
