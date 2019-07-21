@@ -20,7 +20,7 @@ import Shape.Phenomenon;
 public class ClockConsDialog extends JDialog implements ActionListener {
 
 	String[] constraints = { "subClock", "strictPre", "nstrictPre",
-			"alternate", "boundedDiff" };
+			"alternate", "boundedDiff","union","sup","inf" };
 	JComboBox constraint = new JComboBox(constraints);
 
 	JComboBox ClockFrom = new JComboBox();

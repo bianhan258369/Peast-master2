@@ -43,7 +43,7 @@ public class Main extends JFrame implements ActionListener {
 	JMenuItem show = new JMenuItem("Show");
 	JMenuItem about = new JMenuItem("About");
 	JMenuItem add = new JMenuItem("Add Clock Constraint");
-	JMenuItem combine = new JMenuItem("Combine Clock");
+	//JMenuItem combine = new JMenuItem("Combine Clock");
 	JMenuItem createTxt = new JMenuItem("Export Relations");
 	DrawPane myDrawPane = new DrawPane();
 	InfoPane myInfoPane = new InfoPane();
@@ -682,7 +682,7 @@ public class Main extends JFrame implements ActionListener {
 		this.menuBar.add(this.help);
 		this.menuBar.add(this.constraint);
 		this.constraint.add(this.add);
-		this.constraint.add(this.combine);
+		//this.constraint.add(this.combine);
 		this.constraint.add(this.createTxt);
 		this.ontology.add(this.load);
 		this.ontology.add(this.show);
@@ -701,7 +701,7 @@ public class Main extends JFrame implements ActionListener {
 		this.about.addActionListener(this);
 		this.show.addActionListener(this);
 		this.add.addActionListener(this);
-		this.combine.addActionListener(this);
+		//this.combine.addActionListener(this);
 		this.createTxt.addActionListener(this);
 		this.clockDiagrams = new ClockDiagram[100];
 		this.subProblemDiagrams = new Diagram[100];

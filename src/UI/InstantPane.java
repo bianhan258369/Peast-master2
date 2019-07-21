@@ -74,6 +74,9 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 		constraintRelations.put("StrictPre",0);
 		constraintRelations.put("nStrictPre",0);
 		constraintRelations.put("BoundedDiff",2);
+		constraintRelations.put("union",0);
+		constraintRelations.put("sup",0);
+		constraintRelations.put("inf",0);
 		this.type = 1;
 		this.setBackground(Color.white);
 		igs.add(ig);
