@@ -123,11 +123,12 @@ public class InstantGraph implements Serializable {
 				if (problemDiagram == null) return;
 
 				if (!domainColors.containsKey(domain.getShortName())) {
-					Random random = new Random();
-					int colorIndex = random.nextInt(colors.size());
+					//Random random = new Random();
+					//int colorIndex = random.nextInt(colors.size());
+					int colorIndex = 0;
 					clock.setColor(colors.get(colorIndex));
 					domainColors.put(domain.getShortName(), colors.get(colorIndex));
-					System.out.println(domain.getShortName() + " : " + colors.get(colorIndex).toString());
+					//System.out.println(domain.getShortName() + " : " + colors.get(colorIndex).toString());
 					colors.remove(colorIndex);
 				} else clock.setColor(domainColors.get(domain.getShortName()));
 
@@ -290,8 +291,9 @@ public class InstantGraph implements Serializable {
 		if (problemDiagram == null) return;
 
 		if(!domainColors.containsKey(domain.getShortName())){
-			Random random = new Random();
-			int colorIndex = random.nextInt(colors.size());
+			//Random random = new Random();
+			//int colorIndex = random.nextInt(colors.size());
+			int colorIndex = 0;
 			clock.setColor(colors.get(colorIndex));
 			domainColors.put(domain.getShortName(), colors.get(colorIndex));
 			System.out.println(domain.getShortName() + " : " + colors.get(colorIndex).toString());
