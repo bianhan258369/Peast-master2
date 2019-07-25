@@ -287,6 +287,95 @@
      }
      g.setColor(Color.black);
    }
+
+   public void draw(Graphics g, boolean isInTimingDiagram)
+   {
+     if(isInTimingDiagram){
+       Graphics2D g2d = (Graphics2D)g;
+       g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+       if (this.state == 2) {
+         g.setColor(Color.black);
+       }
+       if (this.dian.size() == 0) {
+         if (this.state != 3) {
+           g.drawLine(this.x1, this.y1, this.x2, this.y2);
+         }
+         else {
+           Graphics2D g2 = (Graphics2D)g;
+           BasicStroke dashed = new BasicStroke(1.0F, 0, 0, 10.0F, Data.LENGTHOFDASH, 0.0F);
+
+           g2.setStroke(dashed);
+           g2.draw(new Line2D.Double(this.x1, this.y1, this.x2, this.y2));
+           dashed = new BasicStroke();
+           g2.setStroke(dashed);
+         }
+
+         if (this.selected) {
+           int r = 4;
+
+           Color c = g.getColor();
+           g.setColor(Color.white);
+           g.fillOval(this.x1 - r, this.y1 - r, 2 * r, 2 * r);
+           g.fillOval(this.x2 - r, this.y2 - r, 2 * r, 2 * r);
+           g.setColor(c);
+         }
+
+         if (this.state != 2)
+           drawArrow(g, this.x1, this.y1, this.x2, this.y2);
+       }
+       else
+       {
+         int a = this.x1;
+         int b = this.y1;
+         for (int i = 0; i <= this.dian.size() - 1; i++) {
+           int c = new Integer(this.dian.get(i).toString()).intValue();
+           int d = new Integer(this.dian.get(i + 1).toString()).intValue();
+           if (this.state != 3) {
+             g.drawLine(a, b, c, d);
+           }
+           else {
+             Graphics2D g2 = (Graphics2D)g;
+             BasicStroke dashed = new BasicStroke(1.0F, 0, 0, 10.0F, Data.LENGTHOFDASH, 0.0F);
+
+             g2.setStroke(dashed);
+             g2.draw(new Line2D.Double(a, b, c, d));
+             dashed = new BasicStroke();
+             g2.setStroke(dashed);
+           }
+           i++;
+           a = c;
+           b = d;
+         }
+         if (this.state != 3) {
+           g.drawLine(a, b, this.x2, this.y2);
+         }
+         else {
+           Graphics2D g2 = (Graphics2D)g;
+           BasicStroke dashed = new BasicStroke(1.0F, 0, 0, 10.0F, Data.LENGTHOFDASH, 0.0F);
+
+           g2.setStroke(dashed);
+           g2.draw(new Line2D.Double(a, b, this.x2, this.y2));
+           dashed = new BasicStroke();
+           g2.setStroke(dashed);
+         }
+         if (this.selected) {
+           int r = 4;
+
+           Color c = g.getColor();
+           g.setColor(Color.white);
+           g.fillOval(this.x1 - r, this.y1 - r, 2 * r, 2 * r);
+           g.fillOval(this.x2 - r, this.y2 - r, 2 * r, 2 * r);
+           g.setColor(c);
+         }
+
+         if (this.state != 2) {
+           drawArrow(g, a, b, this.x2, this.y2);
+         }
+       }
+       g.setColor(Color.black);
+     }
+   }
  
    private void drawArrow(Graphics g, int x1, int y1, int x2, int y2)
    {
