@@ -41,7 +41,9 @@ public class ClockDiagram extends Diagram {
 				if (tmpLine.selected) {
 					g.setColor(Color.red);
 				}
-
+				String biao = tmpLine.name;
+				g.drawString(biao, (tmpLine.x1 + tmpLine.x2) / 2,
+						(tmpLine.y1 + tmpLine.y2) / 2 - 5);
 				g.setColor(Color.black);
 				tmp.draw(g);
 			}

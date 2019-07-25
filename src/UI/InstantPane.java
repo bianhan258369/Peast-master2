@@ -324,6 +324,9 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
                         changjing.setState(5);
                         changjing.draw(g);
                     }
+                    if(changjing.getState() == 2){
+                    	changjing.draw(g, true);
+					}
                 }
                 else {
                     Changjing reverse = new Changjing(changjing.getDian(), changjing.getTo(), changjing.getFrom(), 5);
