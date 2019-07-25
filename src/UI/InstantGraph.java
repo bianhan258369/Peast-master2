@@ -110,6 +110,174 @@ public class InstantGraph implements Serializable {
 		}
 	}
 
+	public InstantGraph(Rect domain, Clock clock, int index, boolean inClockSpecification) throws CloneNotSupportedException {
+		if (inClockSpecification) {
+			{
+				originX = 20;
+				originY = 60;
+				length = 800;
+				this.domain = domain;
+				this.clock = clock;
+				this.problemDiagram = Main.win.subProblemDiagrams[index];
+				this.intDiagram = (IntDiagram) Main.win.myIntDiagram.get(index).clone();
+				if (problemDiagram == null) return;
+
+				if (!domainColors.containsKey(domain.getShortName())) {
+					Random random = new Random();
+					int colorIndex = random.nextInt(colors.size());
+					clock.setColor(colors.get(colorIndex));
+					domainColors.put(domain.getShortName(), colors.get(colorIndex));
+					System.out.println(domain.getShortName() + " : " + colors.get(colorIndex).toString());
+					colors.remove(colorIndex);
+				} else clock.setColor(domainColors.get(domain.getShortName()));
+
+				LinkedList tempJiaohu = intDiagram.getJiaohu();
+				LinkedList tempPhenomenon = problemDiagram.getPhenomenon();
+				this.setName(domain.getShortName());
+
+				for (int i = 0; i < tempJiaohu.size(); i++) {
+					Jiaohu temp_j = (Jiaohu) tempJiaohu.get(i);
+					int number = temp_j.getNumber();
+					for (int j = 0; j < tempPhenomenon.size(); j++) {
+						Phenomenon phenomenon = (Phenomenon) tempPhenomenon.get(j);
+						if (phenomenon.getBiaohao() == number) {
+							if (phenomenon.getFrom().getShortName().equals(domain.getShortName()) || phenomenon.getTo().getShortName().equals(domain.getShortName())) {
+								if (!phenomenons.contains(phenomenon)) phenomenons.add(phenomenon);
+								jiaohu.add(temp_j);
+								break;
+							}
+						}
+					}
+				}
+
+
+				LinkedList<Jiaohu> absentBehaviourJiaohu = new LinkedList<>();
+				LinkedList<Jiaohu> absentExpectJiaohu = new LinkedList<>();
+				LinkedList<Jiaohu> allJiaohu = intDiagram.getJiaohu();
+				LinkedList<Changjing> allChangjing = intDiagram.getChangjing();
+				Set<Integer> tempBehaviourSet = new HashSet<>();
+				Set<Integer> tempExpectSet = new HashSet<>();
+
+				//分别得到当前ig所有的行为交互与期望交互的编号
+				for (int i = 0; i < jiaohu.size(); i++) {
+					if (jiaohu.get(i).getState() == 0) tempBehaviourSet.add(jiaohu.get(i).getNumber());
+					if (jiaohu.get(i).getState() == 1) tempExpectSet.add(jiaohu.get(i).getNumber());
+				}
+
+
+				//分别得到当前ig所没有的行为交互与期望交互的编号
+				for (int i = 0; i < allJiaohu.size(); i++) {
+					int number = allJiaohu.get(i).getNumber();
+					if ((tempBehaviourSet.contains(number) || tempExpectSet.contains(number)) && !nowJiaohu.contains(allJiaohu.get(i)))
+						nowJiaohu.add(allJiaohu.get(i));
+					if (allJiaohu.get(i).getState() == 0 && !tempBehaviourSet.contains(number))
+						absentBehaviourJiaohu.add(allJiaohu.get(i));
+					if (allJiaohu.get(i).getState() == 1 && !tempExpectSet.contains(number))
+						absentExpectJiaohu.add(allJiaohu.get(i));
+				}
+
+				//得到与缺少的交互无关的场景
+				for (int i = 0; i < intDiagram.getChangjing().size(); i++) {
+					Changjing changjing = (Changjing) intDiagram.getChangjing().get(i);
+					Jiaohu from = changjing.getFrom();
+					Jiaohu to = changjing.getTo();
+					if (nowJiaohu.contains(from) && nowJiaohu.contains(to)
+							&& (changjing.getState() == 1 || changjing.getState() == 3)) nowChangjing.add(changjing);
+				}
+
+
+				//添加与缺少的行为交互有关的场景
+				LinkedList<Changjing> tempBehaviourChangjing = new LinkedList<>();
+				for (int i = 0; i < intDiagram.getChangjing().size(); i++) {
+					Changjing changjing = (Changjing) intDiagram.getChangjing().get(i);
+					if (changjing.getState() == 1) tempBehaviourChangjing.add(changjing);
+				}
+
+				for (int i = 0; i < absentBehaviourJiaohu.size(); i++) {
+					Jiaohu absent = absentBehaviourJiaohu.get(i);
+					LinkedList<Jiaohu> toAbsent = new LinkedList<>();//指向absent的交互
+					LinkedList<Jiaohu> fromAbsent = new LinkedList<>();//来自absent的交互
+					Iterator it = tempBehaviourChangjing.iterator();
+					while (it.hasNext()) {
+						Changjing changjing = (Changjing) it.next();
+						Jiaohu from = changjing.getFrom();
+						Jiaohu to = changjing.getTo();
+						if (from.equals(absent) && !fromAbsent.contains(to)) {
+							fromAbsent.add(to);
+							it.remove();
+						}
+						if (to.equals(absent) && !toAbsent.contains(from)) {
+							toAbsent.add(from);
+							it.remove();
+						}
+					}
+					for (int j = 0; j < fromAbsent.size(); j++) {
+						Jiaohu tempFrom = fromAbsent.get(j);
+						for (int k = 0; k < toAbsent.size(); k++) {
+							Jiaohu tempTo = toAbsent.get(k);
+							Changjing add = new Changjing(new LinkedList(), tempTo, tempFrom, 1);
+							nowChangjing.add(add);
+							tempBehaviourChangjing.add(add);
+						}
+					}
+				}
+
+				//添加与缺少的期望交互有关的场景
+				LinkedList<Changjing> tempExpectedChangjing = new LinkedList<>();
+				for (int i = 0; i < intDiagram.getChangjing().size(); i++) {
+					Changjing changjing = (Changjing) intDiagram.getChangjing().get(i);
+					if (changjing.getState() == 3) tempExpectedChangjing.add(changjing);
+				}
+				for (int i = 0; i < absentExpectJiaohu.size(); i++) {
+					Jiaohu absent = absentExpectJiaohu.get(i);
+					LinkedList<Jiaohu> toAbsent = new LinkedList<>();//指向absent的交互
+					LinkedList<Jiaohu> fromAbsent = new LinkedList<>();//来自absent的交互
+					Iterator it = tempExpectedChangjing.iterator();
+					while (it.hasNext()) {
+						Changjing changjing = (Changjing) it.next();
+						Jiaohu from = changjing.getFrom();
+						Jiaohu to = changjing.getTo();
+						if (from.equals(absent) && !fromAbsent.contains(to)) {
+							fromAbsent.add(to);
+							it.remove();
+						}
+						if (to.equals(absent) && !toAbsent.contains(from)) {
+							toAbsent.add(from);
+							it.remove();
+						}
+					}
+					for (int j = 0; j < fromAbsent.size(); j++) {
+						Jiaohu tempFrom = fromAbsent.get(j);
+						for (int k = 0; k < toAbsent.size(); k++) {
+							Jiaohu tempTo = toAbsent.get(k);
+							Changjing add = new Changjing(new LinkedList(), tempTo, tempFrom, 3);
+							nowChangjing.add(add);
+							tempExpectedChangjing.add(add);
+						}
+					}
+				}
+
+				Iterator it = nowChangjing.iterator();
+				while (it.hasNext()) {
+					Changjing changjing = (Changjing) it.next();
+					Jiaohu from = changjing.getFrom();
+					Jiaohu to = changjing.getTo();
+					if (!nowJiaohu.contains(from) || !nowJiaohu.contains(to)) it.remove();
+				}
+
+				for (int i = 0; i < allChangjing.size(); i++) {
+					Changjing changjing = allChangjing.get(i);
+					Jiaohu from = changjing.getFrom();
+					Jiaohu to = changjing.getTo();
+					if ((changjing.getState() == 0 || changjing.getState() == 4) && nowJiaohu.contains(from) && nowJiaohu.contains(to)) {
+						nowChangjing.add(changjing);
+					}
+				}
+				this.changjing = allChangjing;
+			}
+		}
+	}
+
 	public InstantGraph(Rect domain, Clock clock, int index) throws CloneNotSupportedException {
 
 		originX = 20;
@@ -569,9 +737,6 @@ public class InstantGraph implements Serializable {
 			g.setFont(tmp);
 		}
 		*/
-
-
-
 	}
 
 	public void draw(Graphics g, boolean inClockSpecification) {
@@ -583,11 +748,12 @@ public class InstantGraph implements Serializable {
 			int maxX = 0;
 			int minY = Integer.MAX_VALUE;
 			int maxY = 0;
-
+			Colour colour = clock.getColor();
+			Color color = new Color(colour.getR(),colour.getG(),colour.getB());
 			for(int i = 0;i < nowJiaohu.size();i++){
 				Jiaohu jiaohu = nowJiaohu.get(i);
 				jiaohu.setState(2);
-				jiaohu.draw(g);
+				jiaohu.draw(g,color);
 			}
 			for(int i = 0;i < nowChangjing.size();i++){
 				Changjing changjing = nowChangjing.get(i);

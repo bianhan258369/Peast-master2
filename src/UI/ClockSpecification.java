@@ -13,7 +13,7 @@ public class ClockSpecification extends JDialog{
         setLocation((int) getWidth() / 2, (int) getHeight() / 2);
         setTitle("ClockSpecification");
         try{
-            instantGraph = new InstantGraph(domain, clock,index);
+            instantGraph = new InstantGraph(domain, clock,index,true);
         }
         catch (Exception e){
             e.printStackTrace();

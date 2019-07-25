@@ -483,7 +483,7 @@ public class Main extends JFrame implements ActionListener {
 		}
 		//Set set = phenomena.keySet();
 		//for(Object s : set) System.out.println(s.toString());
-		for(int i = 0;i < stateMachines.size();i++) System.out.println(stateMachines.get(i).toString());
+		//for(int i = 0;i < stateMachines.size();i++) System.out.println(stateMachines.get(i).toString());
 		for(int i = 0;i < stateMachines.size() - 1;i++){
 			for(int j = i + 1;j < stateMachines.size();j++){
 				StateMachine temp1 = stateMachines.get(i);
@@ -679,8 +679,8 @@ public class Main extends JFrame implements ActionListener {
 		setJMenuBar(this.menuBar);
 		this.menuBar.add(this.file);
 		this.menuBar.add(this.ontology);
-		this.menuBar.add(this.help);
 		this.menuBar.add(this.constraint);
+		this.menuBar.add(this.help);
 		this.constraint.add(this.add);
 		//this.constraint.add(this.combine);
 		this.constraint.add(this.createTxt);
