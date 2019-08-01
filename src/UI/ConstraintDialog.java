@@ -253,7 +253,78 @@ public class ConstraintDialog extends JDialog implements ActionListener {
 
 			else{
 				if(cons.equals("BoundedDiff")){
-
+					if(Integer.parseInt(numbers.get(0).getText()) > 0){
+						graph = new boolean[100][100];
+						visited = new boolean[100];
+						for(int i = 0;i < 100;i++) visited[i] = false;
+						for(int i = 0;i < 100;i++){
+							for(int j = 0;j < 100;j++) graph[i][j] = false;
+						}
+						graph[Integer.parseInt(from.substring(3))][Integer.parseInt(to.substring(3))] = true;
+						InstantPane instantPane = Main.win.instantPane;
+						//System.out.println(instantPane.getChangjings().size());
+						for(int i = 0;i < instantPane.getChangjings().size();i++){
+							Changjing changjing = instantPane.getChangjings().get(i);
+							int fromNum = changjing.getFrom().getNumber();
+							int toNum = changjing.getTo().getNumber();
+							System.out.println(fromNum + "," + toNum);
+							if(changjing.getState() != 2) graph[fromNum][toNum] = true;
+						/*
+						else{
+							graph[fromNum][toNum] = true;
+							graph[toNum][fromNum] = true;
+						}
+						*/
+						}
+						for(int i = 0;i < 100;i++){
+							for(int j = 0;j < 100;j++){
+								if(graph[i][j]) System.out.println("graph[" + i +"][" + j + "]=" + graph[i][j]);
+							}
+						}
+						LinkedList<Jiaohu> jiaohus = instantPane.getJiaohus();
+						for(int i = 0;i < jiaohus.size();i++){
+							if(dfsCheckCircuit(jiaohus.get(i),jiaohus)){
+								JOptionPane.showMessageDialog(null,"Circuit Exists!","Error",JOptionPane.ERROR_MESSAGE);
+								return;
+							}
+						}
+					}
+					else if(Integer.parseInt(numbers.get(1).getText()) < 0){
+						graph = new boolean[100][100];
+						visited = new boolean[100];
+						for(int i = 0;i < 100;i++) visited[i] = false;
+						for(int i = 0;i < 100;i++){
+							for(int j = 0;j < 100;j++) graph[i][j] = false;
+						}
+						graph[Integer.parseInt(to.substring(3))][Integer.parseInt(from.substring(3))] = true;
+						InstantPane instantPane = Main.win.instantPane;
+						//System.out.println(instantPane.getChangjings().size());
+						for(int i = 0;i < instantPane.getChangjings().size();i++){
+							Changjing changjing = instantPane.getChangjings().get(i);
+							int fromNum = changjing.getFrom().getNumber();
+							int toNum = changjing.getTo().getNumber();
+							System.out.println(fromNum + "," + toNum);
+							if(changjing.getState() != 2) graph[fromNum][toNum] = true;
+						/*
+						else{
+							graph[fromNum][toNum] = true;
+							graph[toNum][fromNum] = true;
+						}
+						*/
+						}
+						for(int i = 0;i < 100;i++){
+							for(int j = 0;j < 100;j++){
+								if(graph[i][j]) System.out.println("graph[" + i +"][" + j + "]=" + graph[i][j]);
+							}
+						}
+						LinkedList<Jiaohu> jiaohus = instantPane.getJiaohus();
+						for(int i = 0;i < jiaohus.size();i++){
+							if(dfsCheckCircuit(jiaohus.get(i),jiaohus)){
+								JOptionPane.showMessageDialog(null,"Circuit Exists!","Error",JOptionPane.ERROR_MESSAGE);
+								return;
+							}
+						}
+					}
 				}
 			    for(int i = 0;i < numbers.size();i++){
 			        if(numbers.get(i).getText().trim().equals("")){
