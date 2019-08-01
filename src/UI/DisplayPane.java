@@ -61,6 +61,7 @@
      FatherPane tmp_mp = (FatherPane)this.desk.getSelectedComponent();
      if(tmp_mp instanceof InstantPane){
        Main.win.instantPane = (InstantPane) tmp_mp;
+       //System.out.println(Main.win.instantPane.title);
      }
      if (tmp_mp == null) {
        return;

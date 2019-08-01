@@ -62,6 +62,7 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 	JButton addBut = new JButton("Add Clock Constraint");
     JButton combineBut = new JButton("Clock Construction");
     JButton createTxtBut = new JButton("Export Relations");
+    LinkedList<Changjing> changjings = new LinkedList<>();
 
 
 	static ConstraintPane south = new ConstraintPane();
@@ -134,6 +135,21 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 		addMouseMotionListener(this);
 	}
 	*/
+
+	public LinkedList<Jiaohu> getJiaohus() {
+		LinkedList<Jiaohu> result = new LinkedList<>();
+		for(int i = 0;i < igs.size();i++){
+			InstantGraph ig = igs.get(i);
+
+			for(int j = 0;j < ig.getJiaohu().size();j++) result.add(ig.getJiaohu().get(j));
+		}
+		System.out.println(result.size());
+		return result;
+	}
+
+	public LinkedList<Changjing> getChangjings() {
+		return changjings;
+	}
 
 	public void addGraph(InstantGraph newIg) {
 
@@ -323,13 +339,16 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
                     if(changjing.getState() != 2){
                         changjing.setState(5);
                         changjing.draw(g);
+                        changjings.add(changjing);
                     }
                     if(changjing.getState() == 2){
+						changjings.add(changjing);
                     	changjing.draw(g, true);
 					}
                 }
                 else {
                     Changjing reverse = new Changjing(changjing.getDian(), changjing.getTo(), changjing.getFrom(), 5);
+					changjings.add(reverse);
                     reverse.draw(g);
                 }
             }

@@ -494,7 +494,10 @@ public class Main extends JFrame implements ActionListener {
 						int to = phenomena.get(temp1.getTo()).getBiaohao();
 						for(int k = 0;k < Main.win.myIntDiagram.size();k++){
 							if(Main.win.subProblemDiagrams[k].getPhenomenon().contains(phenomena.get(temp1.getFrom())) && Main.win.subProblemDiagrams[k].getPhenomenon().contains(phenomena.get(temp1.getTo()))){
-								Main.win.instantPanes.get(k).addConstraint("int" + from, "Alternate","int" + to,null);
+								Main.win.instantPanes.get(k).addConstraint("int" + from + ".s", "Alternate","int" + from + ".f",null);
+								Main.win.instantPanes.get(k).addConstraint("int" + to + ".s", "Alternate","int" + to + ".f",null);
+								Main.win.instantPanes.get(k).addConstraint("int" + from + ".f", "Alternate","int" + to + ".s",null);
+								Main.win.instantPanes.get(k).addConstraint("int" + to + ".f", "Alternate","int" + from + ".s",null);
 							}
 						}
 					}
@@ -542,9 +545,6 @@ public class Main extends JFrame implements ActionListener {
 		}
 		if (e.getActionCommand().equals("Add Clock Constraint")){
         	instantPane.addClockConstraint();
-		}
-		if (e.getActionCommand().equals("Combine Clock")){
-			instantPane.ClockConstruction();
 		}
 		if (e.getActionCommand().equals("Export Relations")){
 			instantPane.createRelations();

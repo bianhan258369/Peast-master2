@@ -22,6 +22,7 @@ public class InstantGraph implements Serializable {
 
 	private LinkedList<Jiaohu> nowJiaohu = new LinkedList<>();
 	private LinkedList<Changjing> nowChangjing = new LinkedList<>();
+
 	private LinkedList<Changjing> changjing = new LinkedList<>();
 	private IntDiagram intDiagram = null;
 	private LinkedList<Phenomenon> phenomenons = new LinkedList<Phenomenon>();// �������������йص�����
@@ -1013,4 +1014,7 @@ public class InstantGraph implements Serializable {
 		return intDiagram;
 	}
 
+	public LinkedList<Changjing> getChangjing() {
+		return changjing;
+	}
 }
