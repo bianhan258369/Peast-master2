@@ -26,7 +26,6 @@ public class ConstraintDialog extends JDialog implements ActionListener {
 	LinkedList<InstantGraph> igs;
 	List relationList = new LinkedList();
 	private boolean[] visited = new boolean[100];
-	private boolean[][] graph = new boolean[100][100];
 
 	List<JTextField> numbers = new LinkedList<>();
 	//JTextField number = new JTextField();
@@ -172,14 +171,14 @@ public class ConstraintDialog extends JDialog implements ActionListener {
 		return Integer.parseInt(stringBuilder.toString());
 	}
 
-	private boolean dfsCheckCircuit(Jiaohu jiaohu, LinkedList<Jiaohu> jiaohus) {
+	private boolean dfsCheckCircuit(boolean[][] graph, Jiaohu jiaohu, LinkedList<Jiaohu> jiaohus) {
 		if (visited[jiaohu.getNumber()]) {
 			return true;
 		}
 		visited[jiaohu.getNumber()] = true;
 		for(int i = 0;i < jiaohus.size();i++){
 			if(graph[jiaohu.getNumber()][jiaohus.get(i).getNumber()]){
-				if(dfsCheckCircuit(jiaohus.get(i),jiaohus)){
+				if(dfsCheckCircuit(graph, jiaohus.get(i),jiaohus)){
 					return true;
 				}
 			}
@@ -197,14 +196,11 @@ public class ConstraintDialog extends JDialog implements ActionListener {
 			String num="";
 			if(Main.win.instantPane.constraintRelations.get(cons) == 0){
 				if(cons.equals("StrictPre") || cons.equals("nStrictPre")){
-					graph = new boolean[100][100];
 					visited = new boolean[100];
-					for(int i = 0;i < 100;i++) visited[i] = false;
-					for(int i = 0;i < 100;i++){
-						for(int j = 0;j < 100;j++) graph[i][j] = false;
-					}
-					graph[Integer.parseInt(from.substring(3))][Integer.parseInt(to.substring(3))] = true;
 					InstantPane instantPane = Main.win.instantPane;
+					boolean[][] graph = instantPane.getGraph();
+					for(int i = 0;i < 100;i++) visited[i] = false;
+					graph[Integer.parseInt(from.substring(3))][Integer.parseInt(to.substring(3))] = true;
 					//System.out.println(instantPane.getChangjings().size());
 					for(int i = 0;i < instantPane.getChangjings().size();i++){
 						Changjing changjing = instantPane.getChangjings().get(i);
@@ -226,8 +222,9 @@ public class ConstraintDialog extends JDialog implements ActionListener {
 					}
 					LinkedList<Jiaohu> jiaohus = instantPane.getJiaohus();
 					for(int i = 0;i < jiaohus.size();i++){
-						if(dfsCheckCircuit(jiaohus.get(i),jiaohus)){
+						if(dfsCheckCircuit(graph, jiaohus.get(i),jiaohus)){
 							JOptionPane.showMessageDialog(null,"Circuit Exists!","Error",JOptionPane.ERROR_MESSAGE);
+							graph[Integer.parseInt(from.substring(3))][Integer.parseInt(to.substring(3))] = false;
 							return;
 						}
 					}
@@ -254,14 +251,11 @@ public class ConstraintDialog extends JDialog implements ActionListener {
 			else{
 				if(cons.equals("BoundedDiff")){
 					if(Integer.parseInt(numbers.get(0).getText()) > 0){
-						graph = new boolean[100][100];
+						InstantPane instantPane = Main.win.instantPane;
 						visited = new boolean[100];
 						for(int i = 0;i < 100;i++) visited[i] = false;
-						for(int i = 0;i < 100;i++){
-							for(int j = 0;j < 100;j++) graph[i][j] = false;
-						}
+						boolean[][] graph = instantPane.getGraph();
 						graph[Integer.parseInt(from.substring(3))][Integer.parseInt(to.substring(3))] = true;
-						InstantPane instantPane = Main.win.instantPane;
 						//System.out.println(instantPane.getChangjings().size());
 						for(int i = 0;i < instantPane.getChangjings().size();i++){
 							Changjing changjing = instantPane.getChangjings().get(i);
@@ -283,21 +277,19 @@ public class ConstraintDialog extends JDialog implements ActionListener {
 						}
 						LinkedList<Jiaohu> jiaohus = instantPane.getJiaohus();
 						for(int i = 0;i < jiaohus.size();i++){
-							if(dfsCheckCircuit(jiaohus.get(i),jiaohus)){
+							if(dfsCheckCircuit(graph, jiaohus.get(i),jiaohus)){
 								JOptionPane.showMessageDialog(null,"Circuit Exists!","Error",JOptionPane.ERROR_MESSAGE);
+								graph[Integer.parseInt(from.substring(3))][Integer.parseInt(to.substring(3))] = false;
 								return;
 							}
 						}
 					}
 					else if(Integer.parseInt(numbers.get(1).getText()) < 0){
-						graph = new boolean[100][100];
+						InstantPane instantPane = Main.win.instantPane;
 						visited = new boolean[100];
 						for(int i = 0;i < 100;i++) visited[i] = false;
-						for(int i = 0;i < 100;i++){
-							for(int j = 0;j < 100;j++) graph[i][j] = false;
-						}
+						boolean[][] graph = instantPane.getGraph();
 						graph[Integer.parseInt(to.substring(3))][Integer.parseInt(from.substring(3))] = true;
-						InstantPane instantPane = Main.win.instantPane;
 						//System.out.println(instantPane.getChangjings().size());
 						for(int i = 0;i < instantPane.getChangjings().size();i++){
 							Changjing changjing = instantPane.getChangjings().get(i);
@@ -319,8 +311,9 @@ public class ConstraintDialog extends JDialog implements ActionListener {
 						}
 						LinkedList<Jiaohu> jiaohus = instantPane.getJiaohus();
 						for(int i = 0;i < jiaohus.size();i++){
-							if(dfsCheckCircuit(jiaohus.get(i),jiaohus)){
+							if(dfsCheckCircuit(graph, jiaohus.get(i),jiaohus)){
 								JOptionPane.showMessageDialog(null,"Circuit Exists!","Error",JOptionPane.ERROR_MESSAGE);
+								graph[Integer.parseInt(to.substring(3))][Integer.parseInt(from.substring(3))] = false;
 								return;
 							}
 						}

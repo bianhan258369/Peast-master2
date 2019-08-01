@@ -68,6 +68,7 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 	static ConstraintPane south = new ConstraintPane();
 
 	private boolean isDraw = false;
+	private boolean[][] graph = new boolean[100][100];
 
 	public InstantPane(InstantGraph ig) {
 		constraintRelations.put("SubClock",0);
@@ -82,59 +83,18 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 		this.setBackground(Color.white);
 		igs.add(ig);
 		this.setLayout(new BorderLayout(5,5));
-		//this.add(south, BorderLayout.SOUTH);
 		buttonAndConstrainPanel.setLayout(new BorderLayout());
-		//buttonPanel.setLayout(new GridLayout(3,1));
-		//buttonPanel.setPreferredSize(new Dimension(200,30));
-		//addBut.setFont(font);
-		//combineBut.setFont(font);
-		//createTxtBut.setFont(font);
-		//buttonPanel.add(addBut);
-		//buttonPanel.add(combineBut);
-		//buttonPanel.add(createTxtBut);
-		//buttonAndConstrainPanel.add("Center",south);
-		//buttonAndConstrainPanel.add("West", buttonPanel);
 		this.add("South", buttonAndConstrainPanel);
-		//addBut.addActionListener(this);
-		//combineBut.addActionListener(this);
-		//createTxtBut.addActionListener(this);
 		addMouseListener(this);
 		addMouseMotionListener(this);
-		//addBut.setEnabled(false);
-		//combineBut.setEnabled(false);
-		//createTxtBut.setEnabled(false);
+		for(int i = 0;i < 100;i++){
+			for(int j = 0;j < 100;j++) graph[i][j] = false;
+		}
 	}
 
-	/*
-	public InstantPane(Rect domain, Clock clock) {
-
-		constraintRelations.put("SubClock",0);
-		constraintRelations.put("Alternate",0);
-		constraintRelations.put("StrictPre",0);
-		constraintRelations.put("nStrictPre",0);
-		constraintRelations.put("BoundedDiff",2);
-		this.type = 1;
-		this.setBackground(Color.white);
-		InstantGraph ig = new InstantGraph(domain, clock);
-		igs.add(ig);
-		this.setLayout(new BorderLayout());
-		this.add(south, BorderLayout.SOUTH);
-		buttonPanel.setLayout(new GridLayout(7, 1));
-		buttonPanel.setPreferredSize(new Dimension(200,30));
-		addBut.setFont(font);
-		combineBut.setFont(font);
-		createTxtBut.setFont(font);
-		buttonPanel.add(addBut);
-		buttonPanel.add(combineBut);
-		buttonPanel.add(createTxtBut);
-		this.add("East", buttonPanel);
-		addBut.addActionListener(this);
-		combineBut.addActionListener(this);
-		createTxtBut.addActionListener(this);
-		addMouseListener(this);
-		addMouseMotionListener(this);
+	public boolean[][] getGraph() {
+		return graph;
 	}
-	*/
 
 	public LinkedList<Jiaohu> getJiaohus() {
 		LinkedList<Jiaohu> result = new LinkedList<>();
@@ -178,31 +138,6 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
 		this.repaint();
 	}
 
-
-	/*
-	public void addGraph(Rect domain, Clock clock) {
-
-		for (int m = 0; m < igs.size(); m++) {
-
-			if (null == igs.get(m).getDomain()) {
-				continue;
-			}
-
-			if (igs.get(m).getDomain().equals(domain)) {
-				igs.get(m).setClock(clock);
-				return;
-			}
-		}
-		InstantGraph ig = new InstantGraph(domain, clock);
-		igs.add(ig);
-
-		ig.setPosition(20, count * 60 + 60);
-		// igs.add(index, newIg);
-		count++;
-
-		this.repaint();
-	}
-	*/
 
 	public void addConstructionGraph(int index, LinkedList<String> domains,
 			String name, Clock clock) {
@@ -339,7 +274,8 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
                     if(changjing.getState() != 2){
                         changjing.setState(5);
                         changjing.draw(g);
-                        changjings.add(changjing);
+                        //changjings.add(changjing);
+                        graph[changjing.getFrom().getNumber()][changjing.getTo().getNumber()] = true;
                     }
                     if(changjing.getState() == 2){
 						changjings.add(changjing);
@@ -348,8 +284,9 @@ public class InstantPane extends FatherPane implements MouseMotionListener,
                 }
                 else {
                     Changjing reverse = new Changjing(changjing.getDian(), changjing.getTo(), changjing.getFrom(), 5);
-					changjings.add(reverse);
+					//changjings.add(reverse);
                     reverse.draw(g);
+					graph[reverse.getFrom().getNumber()][reverse.getTo().getNumber()] = true;
                 }
             }
 		}

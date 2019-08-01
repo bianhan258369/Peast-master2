@@ -93,6 +93,7 @@ public class ConstraintPane extends JPanel {
 							&& Main.win.instantPane.tos.get(i).getNumber() == ConstraintDialog.getStringNum(to)
 							&& Main.win.instantPane.ClockRelations.get(i).getKey() .equals(relationStr)){
 						res = i;
+						Main.win.instantPane.getGraph()[ConstraintDialog.getStringNum(from)][ConstraintDialog.getStringNum(to)] = false;
 						break;
 					}
 				}
