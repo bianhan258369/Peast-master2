@@ -69,6 +69,7 @@
      return tmp1 + tmp2 <= 1;
    }
  
+
    private void setSize(int middlex, int middley)
    {
      this.length = (this.text.length() * 7 + 25);
@@ -78,7 +79,6 @@
      this.x1 = (middlex - this.x2 / 2);
      this.y1 = (middley - this.y2 / 2);
    }
- 
    public void moveTo(int x, int y) {
      this.x1 += x;
      this.y1 += y;

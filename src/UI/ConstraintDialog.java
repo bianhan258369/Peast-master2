@@ -201,6 +201,11 @@ public class ConstraintDialog extends JDialog implements ActionListener {
 					boolean[][] graph = instantPane.getGraph();
 					for(int i = 0;i < 100;i++) visited[i] = false;
 					graph[Integer.parseInt(from.substring(3))][Integer.parseInt(to.substring(3))] = true;
+					for(int i = 0;i < 100;i++){
+						for(int j = 0;j < 100;j++){
+							if(graph[i][j]) System.out.println("graph[" + i +"][" + j + "]=" + graph[i][j]);
+						}
+					}
 					//System.out.println(instantPane.getChangjings().size());
 					for(int i = 0;i < instantPane.getChangjings().size();i++){
 						Changjing changjing = instantPane.getChangjings().get(i);
@@ -297,12 +302,6 @@ public class ConstraintDialog extends JDialog implements ActionListener {
 							int toNum = changjing.getTo().getNumber();
 							System.out.println(fromNum + "," + toNum);
 							if(changjing.getState() != 2) graph[fromNum][toNum] = true;
-						/*
-						else{
-							graph[fromNum][toNum] = true;
-							graph[toNum][fromNum] = true;
-						}
-						*/
 						}
 						for(int i = 0;i < 100;i++){
 							for(int j = 0;j < 100;j++){

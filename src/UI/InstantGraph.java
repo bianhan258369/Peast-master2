@@ -25,10 +25,10 @@ public class InstantGraph implements Serializable {
 
 	private LinkedList<Changjing> changjing = new LinkedList<>();
 	private IntDiagram intDiagram = null;
-	private LinkedList<Phenomenon> phenomenons = new LinkedList<Phenomenon>();// �������������йص�����
-	private LinkedList<String> constraint = new LinkedList<String>();// ��Ŵ�ʱ��ͼ��Լ�����
-	private LinkedList<Jiaohu> jiaohu = new LinkedList<Jiaohu>(); // ���潻��
-	private Hashtable<Integer, String> weight = new Hashtable<Integer, String>();//���潻����˳��
+	private LinkedList<Phenomenon> phenomenons = new LinkedList<Phenomenon>();
+	private LinkedList<String> constraint = new LinkedList<String>();
+	private LinkedList<Jiaohu> jiaohu = new LinkedList<Jiaohu>();
+	private Hashtable<Integer, String> weight = new Hashtable<Integer, String>();
 	static LinkedList<Colour> colors = new LinkedList<>();
 	static Map<String, Colour> domainColors = new HashMap<>();
 	private Rect domain;// Ҫ����ʱ��ͼ��������
@@ -271,7 +271,7 @@ public class InstantGraph implements Serializable {
 					Changjing changjing = allChangjing.get(i);
 					Jiaohu from = changjing.getFrom();
 					Jiaohu to = changjing.getTo();
-					if ((changjing.getState() == 0 || changjing.getState() == 4) && nowJiaohu.contains(from) && nowJiaohu.contains(to)) {
+					if ((changjing.getState() == 0|| changjing.getState() == 2 || changjing.getState() == 4) && nowJiaohu.contains(from) && nowJiaohu.contains(to)) {
 						nowChangjing.add(changjing);
 					}
 				}

@@ -396,8 +396,8 @@ public class Main extends JFrame implements ActionListener {
 				File sdFile = new File(sdPath);
 				IntDiagram intDiagram = new IntDiagram("SenarioDiagram" + senCount,senCount,sdFile);
 				this.myIntDiagram.add(intDiagram);
-//				IntPane tempIntPane = new IntPane(intDiagram, 1,myProblemDiagram);
-//				this.myDisplayPane.addPane(tempIntPane,intDiagram.getTitle());
+				IntPane tempIntPane = new IntPane(intDiagram, 1,myProblemDiagram);
+				this.myDisplayPane.addPane(tempIntPane,intDiagram.getTitle());
 				senCount++;
 			}
 			this.myInfoPane.treeInit();
