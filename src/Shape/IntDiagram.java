@@ -38,14 +38,15 @@ public class IntDiagram implements Serializable,Cloneable {
 		try{
 			SAXReader saxReader = new SAXReader();
 			Document document = saxReader.read(file);
-			Element root = document.getRootElement().elementIterator("ScenarioGraph").next();
+			Element root = document.getRootElement();
+			Element nodeRoot = root.elementIterator("NodeList").next();
 			Element temp;
 
-			Element intNode = root.elementIterator("IntNode").next();
-			Element controlNode = root.elementIterator("ControlNode").next();
+			Element intNode = nodeRoot.elementIterator("IntNode").next();
+			Element controlNode = nodeRoot.elementIterator("ControlNode").next();
 			Element lineNode = root.elementIterator("LineList").next();
 
-			Element actIntNode = intNode.elementIterator("ActIntNode").next();
+			Element actIntNode = intNode.elementIterator("BehIntNode").next();
 			for(Iterator i = actIntNode.elementIterator("Element");i.hasNext();){
 				temp = (Element)i.next();
 				String str[] = temp.attributeValue("node_locality").split(",");
@@ -59,7 +60,7 @@ public class IntDiagram implements Serializable,Cloneable {
 				jiaohu.add(tempJiaohu);
 			}
 
-			Element expectIntNode = intNode.elementIterator("ExpectIntNode").next();
+			Element expectIntNode = intNode.elementIterator("ExpIntNode").next();
 			for(Iterator i = expectIntNode.elementIterator("Element");i.hasNext();){
 				temp = (Element)i.next();
 				String str[] = temp.attributeValue("node_locality").split(",");
@@ -86,7 +87,7 @@ public class IntDiagram implements Serializable,Cloneable {
 				int fNumber = Integer.parseInt(temp.attributeValue("from_no"));
 				int fState = -1;
 				if(temp.attributeValue("from_type").equals("Start")) fState = 2;
-				else if(temp.attributeValue("from_type").equals("Start")) fState = 0;
+				else if(temp.attributeValue("from_type").equals("BehInt")) fState = 0;
 				else if(temp.attributeValue("from_type").equals("ExpInt")) fState = 1;
 				else if(temp.attributeValue("from_type").equals("End")) fState = 3;
 				else if(temp.attributeValue("from_type").equals("Decision")) fState = 4;
@@ -100,7 +101,7 @@ public class IntDiagram implements Serializable,Cloneable {
 				int tNumber = Integer.parseInt(temp.attributeValue("to_no"));
 				int tState = -1;
 				if(temp.attributeValue("to_type").equals("Start")) tState = 2;
-				else if(temp.attributeValue("to_type").equals("Start")) tState = 0;
+				else if(temp.attributeValue("to_type").equals("BehInt")) tState = 0;
 				else if(temp.attributeValue("to_type").equals("ExpInt")) tState = 1;
 				else if(temp.attributeValue("to_type").equals("End")) tState = 3;
 				else if(temp.attributeValue("to_type").equals("Decision")) tState = 4;
@@ -117,6 +118,9 @@ public class IntDiagram implements Serializable,Cloneable {
 			Element actOrder = lineNode.elementIterator("BehOrder").next();
 			for(Iterator i = actOrder.elementIterator("Element");i.hasNext();){
 				temp = (Element)i.next();
+				String fType = temp.attributeValue("from_type");
+				String tType = temp.attributeValue("to_type");
+				if(!fType.equals("BehInt") || !tType.equals("BehInt")) continue;
 				String str[];
 				if(temp.attributeValue("turnings").contains(",")) str = temp.attributeValue("turnings").split(",");
 				else str = new String[0];
@@ -127,7 +131,7 @@ public class IntDiagram implements Serializable,Cloneable {
 				int fNumber = Integer.parseInt(temp.attributeValue("from_no"));
 				int fState = -1;
 				if(temp.attributeValue("from_type").equals("Start")) fState = 2;
-				else if(temp.attributeValue("from_type").equals("Start")) fState = 0;
+				else if(temp.attributeValue("from_type").equals("BehInt")) fState = 0;
 				else if(temp.attributeValue("from_type").equals("ExpInt")) fState = 1;
 				else if(temp.attributeValue("from_type").equals("End")) fState = 3;
 				else if(temp.attributeValue("from_type").equals("Decision")) fState = 4;
@@ -141,7 +145,7 @@ public class IntDiagram implements Serializable,Cloneable {
 				int tNumber = Integer.parseInt(temp.attributeValue("to_no"));
 				int tState = -1;
 				if(temp.attributeValue("to_type").equals("Start")) tState = 2;
-				else if(temp.attributeValue("to_type").equals("Start")) tState = 0;
+				else if(temp.attributeValue("to_type").equals("BehInt")) tState = 0;
 				else if(temp.attributeValue("to_type").equals("ExpInt")) tState = 1;
 				else if(temp.attributeValue("to_type").equals("End")) tState = 3;
 				else if(temp.attributeValue("to_type").equals("Decision")) tState = 4;
@@ -168,7 +172,7 @@ public class IntDiagram implements Serializable,Cloneable {
 				int fNumber = Integer.parseInt(temp.attributeValue("from_no"));
 				int fState = -1;
 				if(temp.attributeValue("from_type").equals("Start")) fState = 2;
-				else if(temp.attributeValue("from_type").equals("Start")) fState = 0;
+				else if(temp.attributeValue("from_type").equals("BehInt")) fState = 0;
 				else if(temp.attributeValue("from_type").equals("ExpInt")) fState = 1;
 				else if(temp.attributeValue("from_type").equals("End")) fState = 3;
 				else if(temp.attributeValue("from_type").equals("Decision")) fState = 4;
@@ -182,7 +186,7 @@ public class IntDiagram implements Serializable,Cloneable {
 				int tNumber = Integer.parseInt(temp.attributeValue("to_no"));
 				int tState = -1;
 				if(temp.attributeValue("to_type").equals("Start")) tState = 2;
-				else if(temp.attributeValue("to_type").equals("Start")) tState = 0;
+				else if(temp.attributeValue("to_type").equals("BehInt")) tState = 0;
 				else if(temp.attributeValue("to_type").equals("ExpInt")) tState = 1;
 				else if(temp.attributeValue("to_type").equals("End")) tState = 3;
 				else if(temp.attributeValue("to_type").equals("Decision")) tState = 4;
@@ -199,6 +203,9 @@ public class IntDiagram implements Serializable,Cloneable {
 			Element expectOrder = lineNode.elementIterator("ExpOrder").next();
 			for(Iterator i = expectOrder.elementIterator("Element");i.hasNext();){
 				temp = (Element)i.next();
+				String fType = temp.attributeValue("from_type");
+				String tType = temp.attributeValue("to_type");
+				if(!fType.equals("ExpInt") || !tType.equals("ExpInt")) continue;
 				String str[];
 				if(temp.attributeValue("turnings").contains(",")) str = temp.attributeValue("turnings").split(",");
 				else str = new String[0];
@@ -209,7 +216,7 @@ public class IntDiagram implements Serializable,Cloneable {
 				int fNumber = Integer.parseInt(temp.attributeValue("from_no"));
 				int fState = -1;
 				if(temp.attributeValue("from_type").equals("Start")) fState = 2;
-				else if(temp.attributeValue("from_type").equals("Start")) fState = 0;
+				else if(temp.attributeValue("from_type").equals("BehInt")) fState = 0;
 				else if(temp.attributeValue("from_type").equals("ExpInt")) fState = 1;
 				else if(temp.attributeValue("from_type").equals("End")) fState = 3;
 				else if(temp.attributeValue("from_type").equals("Decision")) fState = 4;
@@ -223,7 +230,7 @@ public class IntDiagram implements Serializable,Cloneable {
 				int tNumber = Integer.parseInt(temp.attributeValue("to_no"));
 				int tState = -1;
 				if(temp.attributeValue("to_type").equals("Start")) tState = 2;
-				else if(temp.attributeValue("to_type").equals("Start")) tState = 0;
+				else if(temp.attributeValue("to_type").equals("BehInt")) tState = 0;
 				else if(temp.attributeValue("to_type").equals("ExpInt")) tState = 1;
 				else if(temp.attributeValue("to_type").equals("End")) tState = 3;
 				else if(temp.attributeValue("to_type").equals("Decision")) tState = 4;
@@ -250,7 +257,7 @@ public class IntDiagram implements Serializable,Cloneable {
 				int fNumber = Integer.parseInt(temp.attributeValue("from_no"));
 				int fState = -1;
 				if(temp.attributeValue("from_type").equals("Start")) fState = 2;
-				else if(temp.attributeValue("from_type").equals("Start")) fState = 0;
+				else if(temp.attributeValue("from_type").equals("BehInt")) fState = 0;
 				else if(temp.attributeValue("from_type").equals("ExpInt")) fState = 1;
 				else if(temp.attributeValue("from_type").equals("End")) fState = 3;
 				else if(temp.attributeValue("from_type").equals("Decision")) fState = 4;
@@ -264,7 +271,7 @@ public class IntDiagram implements Serializable,Cloneable {
 				int tNumber = Integer.parseInt(temp.attributeValue("to_no"));
 				int tState = -1;
 				if(temp.attributeValue("to_type").equals("Start")) tState = 2;
-				else if(temp.attributeValue("to_type").equals("Start")) tState = 0;
+				else if(temp.attributeValue("to_type").equals("BehInt")) tState = 0;
 				else if(temp.attributeValue("to_type").equals("ExpInt")) tState = 1;
 				else if(temp.attributeValue("to_type").equals("End")) tState = 3;
 				else if(temp.attributeValue("to_type").equals("Decision")) tState = 4;
@@ -290,7 +297,7 @@ public class IntDiagram implements Serializable,Cloneable {
 				int fNumber = Integer.parseInt(temp.attributeValue("from_no"));
 				int fState = -1;
 				if(temp.attributeValue("from_type").equals("Start")) fState = 2;
-				else if(temp.attributeValue("from_type").equals("Start")) fState = 0;
+				else if(temp.attributeValue("from_type").equals("BehInt")) fState = 0;
 				else if(temp.attributeValue("from_type").equals("ExpInt")) fState = 1;
 				else if(temp.attributeValue("from_type").equals("End")) fState = 3;
 				else if(temp.attributeValue("from_type").equals("Decision")) fState = 4;
@@ -304,7 +311,7 @@ public class IntDiagram implements Serializable,Cloneable {
 				int tNumber = Integer.parseInt(temp.attributeValue("to_no"));
 				int tState = -1;
 				if(temp.attributeValue("to_type").equals("Start")) tState = 2;
-				else if(temp.attributeValue("to_type").equals("Start")) tState = 0;
+				else if(temp.attributeValue("to_type").equals("BehInt")) tState = 0;
 				else if(temp.attributeValue("to_type").equals("ExpInt")) tState = 1;
 				else if(temp.attributeValue("to_type").equals("End")) tState = 3;
 				else if(temp.attributeValue("to_type").equals("Decision")) tState = 4;
@@ -325,7 +332,7 @@ public class IntDiagram implements Serializable,Cloneable {
 								int dNumber = Integer.parseInt(tempFrom.attributeValue("node_no"));
 								int dState = -1;
 								if(tempFrom.attributeValue("node_type").equals("Start")) dState = 2;
-								else if(tempFrom.attributeValue("node_type").equals("Start")) dState = 0;
+								else if(tempFrom.attributeValue("node_type").equals("BehInt")) dState = 0;
 								else if(tempFrom.attributeValue("node_type").equals("ExpInt")) dState = 1;
 								else if(tempFrom.attributeValue("node_type").equals("End")) dState = 3;
 								else if(tempFrom.attributeValue("node_type").equals("Decision")) dState = 4;
@@ -347,7 +354,7 @@ public class IntDiagram implements Serializable,Cloneable {
 						int mNumber = Integer.parseInt(tempTo.attributeValue("node_no"));
 						int mState = -1;
 						if(tempTo.attributeValue("node_type").equals("Start")) mState = 2;
-						else if(tempTo.attributeValue("node_type").equals("Start")) mState = 0;
+						else if(tempTo.attributeValue("node_type").equals("BehInt")) mState = 0;
 						else if(tempTo.attributeValue("node_type").equals("ExpInt")) mState = 1;
 						else if(tempTo.attributeValue("node_type").equals("End")) mState = 3;
 						else if(tempTo.attributeValue("node_type").equals("Decision")) mState = 4;
@@ -371,7 +378,7 @@ public class IntDiagram implements Serializable,Cloneable {
 				int fNumber = Integer.parseInt(temp.attributeValue("from_no"));
 				int fState = -1;
 				if(temp.attributeValue("from_type").equals("Start")) fState = 2;
-				else if(temp.attributeValue("from_type").equals("Start")) fState = 0;
+				else if(temp.attributeValue("from_type").equals("BehInt")) fState = 0;
 				else if(temp.attributeValue("from_type").equals("ExpInt")) fState = 1;
 				else if(temp.attributeValue("from_type").equals("End")) fState = 3;
 				else if(temp.attributeValue("from_type").equals("Decision")) fState = 4;
@@ -385,7 +392,7 @@ public class IntDiagram implements Serializable,Cloneable {
 				int tNumber = Integer.parseInt(temp.attributeValue("to_no"));
 				int tState = -1;
 				if(temp.attributeValue("to_type").equals("Start")) tState = 2;
-				else if(temp.attributeValue("to_type").equals("Start")) tState = 0;
+				else if(temp.attributeValue("to_type").equals("BehInt")) tState = 0;
 				else if(temp.attributeValue("to_type").equals("ExpInt")) tState = 1;
 				else if(temp.attributeValue("to_type").equals("End")) tState = 3;
 				else if(temp.attributeValue("to_type").equals("Decision")) tState = 4;
@@ -495,6 +502,7 @@ public class IntDiagram implements Serializable,Cloneable {
 					getBehaviourPrecedent(tempFrom, precedent);
 					getExpectedSuccessor(tempTo, successor);
 					if(precedent.size() > 0) {
+						index = 0;
 						while (index < precedent.size()) {
 							getBehaviourPrecedent(precedent.get(index), precedent);
 							index++;

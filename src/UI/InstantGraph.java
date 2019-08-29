@@ -271,6 +271,8 @@ public class InstantGraph implements Serializable {
 					Changjing changjing = allChangjing.get(i);
 					Jiaohu from = changjing.getFrom();
 					Jiaohu to = changjing.getTo();
+					System.out.println(from.getNumber() + "," + from.getState());
+					System.out.println(to.getNumber() + "," + to.getState());
 					if ((changjing.getState() == 0|| changjing.getState() == 2 || changjing.getState() == 4) && nowJiaohu.contains(from) && nowJiaohu.contains(to)) {
 						nowChangjing.add(changjing);
 					}

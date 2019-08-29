@@ -126,9 +126,9 @@ public class Main extends JFrame implements ActionListener {
 			String path = Diagram.getFilePath(file.getPath());
 			Document project = saxReader.read(file);
 			Element rootElement = project.getRootElement();
-			Element filelist = rootElement.elementIterator("filelist").next();
-			Element senList = filelist.elementIterator("SenarioFilelist").next();
-			for(Iterator it = senList.elementIterator("SenarioDiagram");it.hasNext();){
+			Element filelist = rootElement.elementIterator("fileList").next();
+			Element senList = filelist.elementIterator("SenarioGraphList").next();
+			for(Iterator it = senList.elementIterator("SenarioGraph");it.hasNext();){
 				Element sd = (Element) it.next();
 				String sdPath = Diagram.getFilePath(file.getPath()) + sd.getText()+".xml";
 				File sdFile = new File(sdPath);
@@ -157,7 +157,7 @@ public class Main extends JFrame implements ActionListener {
 			String path = Diagram.getFilePath(file.getPath());
 			Document project = saxReader.read(file);
 			Element rootElement = project.getRootElement();
-			Element filelist = rootElement.elementIterator("filelist").next();
+			Element filelist = rootElement.elementIterator("fileList").next();
 			Element subList = filelist.elementIterator("SubProblemDiagramList").next();
 			for(Iterator it = subList.elementIterator("SubProblemDiagram");it.hasNext();){
 				Diagram diagram = new Diagram("SubProblemDiagram" + count);
@@ -198,7 +198,7 @@ public class Main extends JFrame implements ActionListener {
 					diagram.components.add(oval);
 				}
 
-				Element problemDomain = (Element) spdRoot.elementIterator("Problemdomain").next();
+				Element problemDomain = (Element) spdRoot.elementIterator("ProblemDomain").next();
 				Element givenDomain = problemDomain.elementIterator("GivenDomain").next();
 				for(Iterator i = givenDomain.elementIterator("Element");i.hasNext();){
 					temp = (Element)i.next();
@@ -268,8 +268,8 @@ public class Main extends JFrame implements ActionListener {
 							Shape tempShape = (Shape)diagram.components.get(k);
 							if(tempShape instanceof Rect){
 								Rect tempRect = (Rect)tempShape;
-								if(tempRect.getText().equals(phenomenonFrom)) phenomenonFromRect = tempRect;
-								if(tempRect.getText().equals(phenomenonTo)) phenomenonToRect = tempRect;
+								if(tempRect.getShortName().equals(phenomenonFrom)) phenomenonFromRect = tempRect;
+								if(tempRect.getShortName().equals(phenomenonTo)) phenomenonToRect = tempRect;
 							}
 						}
 						int phenomenonBiaohao = Integer.parseInt(tempPhenomenon.attributeValue("phenomenon_no"));
@@ -322,8 +322,8 @@ public class Main extends JFrame implements ActionListener {
 							Shape tempShape = (Shape)diagram.components.get(k);
 							if(tempShape instanceof Rect){
 								Rect tempRect = (Rect)tempShape;
-								if(tempRect.getText().equals(phenomenonFrom)) phenomenonFromRect = tempRect;
-								if(tempRect.getText().equals(phenomenonTo)) phenomenonToRect = tempRect;
+								if(tempRect.getShortName().equals(phenomenonFrom)) phenomenonFromRect = tempRect;
+								if(tempRect.getShortName().equals(phenomenonTo)) phenomenonToRect = tempRect;
 							}
 						}
 						Oval oval = diagram.getRequirement(pehnomenonRequirementBiaohao);
@@ -377,8 +377,8 @@ public class Main extends JFrame implements ActionListener {
 							Shape tempShape = (Shape)diagram.components.get(k);
 							if(tempShape instanceof Rect){
 								Rect tempRect = (Rect)tempShape;
-								if(tempRect.getText().equals(phenomenonFrom)) phenomenonFromRect = tempRect;
-								if(tempRect.getText().equals(phenomenonTo)) phenomenonToRect = tempRect;
+								if(tempRect.getShortName().equals(phenomenonFrom)) phenomenonFromRect = tempRect;
+								if(tempRect.getShortName().equals(phenomenonTo)) phenomenonToRect = tempRect;
 							}
 						}
 						Oval oval = diagram.getRequirement(pehnomenonRequirementBiaohao);
@@ -399,8 +399,8 @@ public class Main extends JFrame implements ActionListener {
 			}
 			this.myProblemDiagram = new Diagram("ProblemDiagram",file);
 			int senCount = 1;
-			Element senList = filelist.elementIterator("SenarioFilelist").next();
-			for(Iterator it = senList.elementIterator("SenarioDiagram");it.hasNext();){
+			Element senList = filelist.elementIterator("SenarioGraphList").next();
+			for(Iterator it = senList.elementIterator("SenarioGraph");it.hasNext();){
 				Element sd = (Element) it.next();
 				String sdPath = Diagram.getFilePath(file.getPath()) + sd.getText()+".xml";
 				File sdFile = new File(sdPath);

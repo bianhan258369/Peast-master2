@@ -23,7 +23,7 @@ public class Diagram implements Serializable {
 		SAXReader saxReader = new SAXReader();
 		Document document = saxReader.read(path);
 		Element rootElement = document.getRootElement();
-		Iterator it = rootElement.elementIterator("filelist");
+		Iterator it = rootElement.elementIterator("fileList");
 		Element root = (Element) it.next();
 		return root.elementIterator("SubProblemDiagramList").next().elementIterator("SubProblemDiagram").hasNext();
 	}
@@ -46,7 +46,7 @@ public class Diagram implements Serializable {
 				String path = getFilePath(file.getPath());
 				Document project = saxReader.read(file);
 				Element rootElement = project.getRootElement();
-				Element filelist = rootElement.elementIterator("filelist").next();
+				Element filelist = rootElement.elementIterator("fileList").next();
 				String cdPath = path + filelist.elementIterator("ContextDiagram").next().getText() + ".xml";
 				String pdPath = path + filelist.elementIterator("ProblemDiagram").next().getText() + ".xml";
 
@@ -167,8 +167,8 @@ public class Diagram implements Serializable {
 							Shape tempShape = (Shape)this.components.get(k);
 							if(tempShape instanceof Rect){
 								Rect tempRect = (Rect)tempShape;
-								if(tempRect.getText().equals(phenomenonFrom)) phenomenonFromRect = tempRect;
-								if(tempRect.getText().equals(phenomenonTo)) phenomenonToRect = tempRect;
+								if(tempRect.getShortName().equals(phenomenonFrom)) phenomenonFromRect = tempRect;
+								if(tempRect.getShortName().equals(phenomenonTo)) phenomenonToRect = tempRect;
 							}
 						}
 						int phenomenonBiaohao = Integer.parseInt(tempPhenomenon.attributeValue("phenomenon_no"));
@@ -221,8 +221,8 @@ public class Diagram implements Serializable {
 							Shape tempShape = (Shape)this.components.get(k);
 							if(tempShape instanceof Rect){
 								Rect tempRect = (Rect)tempShape;
-								if(tempRect.getText().equals(phenomenonFrom)) phenomenonFromRect = tempRect;
-								if(tempRect.getText().equals(phenomenonTo)) phenomenonToRect = tempRect;
+								if(tempRect.getShortName().equals(phenomenonFrom)) phenomenonFromRect = tempRect;
+								if(tempRect.getShortName().equals(phenomenonTo)) phenomenonToRect = tempRect;
 							}
 						}
 						Oval oval = this.getRequirement(pehnomenonRequirementBiaohao);
@@ -239,8 +239,8 @@ public class Diagram implements Serializable {
 				for(Iterator i = constraint.elementIterator("Element");i.hasNext();){
 					temp = (Element)i.next();
 					String name = temp.attributeValue("constraint_name");
-					String to = temp.attributeValue("constraint_from");
-					String from = temp.attributeValue("constraint_to");
+					String to = temp.attributeValue("constraint_to");
+					String from = temp.attributeValue("constraint_from");
 					Shape toShape = null;
 					Shape fromShape = null;
 					for(int j = 0;j < this.components.size();j++){
@@ -276,8 +276,8 @@ public class Diagram implements Serializable {
 							Shape tempShape = (Shape)this.components.get(k);
 							if(tempShape instanceof Rect){
 								Rect tempRect = (Rect)tempShape;
-								if(tempRect.getText().equals(phenomenonFrom)) phenomenonFromRect = tempRect;
-								if(tempRect.getText().equals(phenomenonTo)) phenomenonToRect = tempRect;
+								if(tempRect.getShortName().equals(phenomenonFrom)) phenomenonFromRect = tempRect;
+								if(tempRect.getShortName().equals(phenomenonTo)) phenomenonToRect = tempRect;
 							}
 						}
 						Oval oval = this.getRequirement(pehnomenonRequirementBiaohao);
